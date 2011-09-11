@@ -1,0 +1,206 @@
+\documentclass{beamer}
+\usepackage{algorithmic}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{12 de setembro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+
+
+\section{2. Estruturas de dados}
+
+\begin{frame}{\bf 2. Tipos de dados}{\bf 2.1 Representação de número nos computador e limitações}
+
+\begin{block}{Representação $b$-ária}
+Seja $b$ um número positivo. Qualquer número positvo $x\in \ZZ$ tem uma representação única:
+$$ x = (-1)^s a_0 + a_1b + a_2b^2 + a_3b_3 + \cdots a_nb^n$$
+onde $a_i \in \{0,1,\ldots, b-1\}$ e $s\in\{0,1\}$.
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{\bf 2.}{\bf 2.1 Representação de número nos computador e limitações}
+O tipo {\it unsigned int} pode representar números entre $0$ e $2^{32}-1$.
+
+\begin{block}{Representação $2^{32}$-ária}
+Identificamos um tuple $x=(s,v)$ onde $s\in \{0,1\}$ $v=\cvector{a_0,a_1,\ldots, a_n}$ onde $0\leq a_i < 2^{32}$ com o número 
+$$ (-1)^s a_0 + a_12^{32} + a_22^{64} + a_32^{96} + \cdots a_n2^{32n}$$
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf 2.1 Representação de inteiros no computador}
+
+Um exemplo:
+
+\begin{lstlisting}[language=C++]
+#include <vector>
+
+class inteiros {
+
+  int s;
+  vector<int> v;
+
+  inteiros (int sign, vector<int> coeficents)
+  {
+    s = sign;
+    v = coeficents;
+  }
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]{\bf 2.}{\bf Adição de inteiros}
+\begin{algorithmic}
+\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(s,(b_0,\ldots, b_n))$
+\ENSURE inteiro $z=(s, (c_0, \ldots, c_{n+1}))$ tal que $z=x+y$.
+\STATE $\gamma \leftarrow 0$ 
+\FOR{ $i=0,\ldots, n$ }
+  \STATE $c_i \leftarrow a_i+b_i+\gamma$
+  \IF {$c_i\geq 2^{32}$}
+        \STATE $c_i \leftarrow c_i - 2^{32}$
+        \STATE $\gamma \leftarrow 1$
+  \ELSE
+	\STATE $\gamma \leftarrow 0$
+  \ENDIF
+\ENDFOR
+\STATE $c_{n+1}\leftarrow \gamma$
+\end{algorithmic}
+
+\end{frame}
+
+
+\begin{frame}{Exemplo}
+\begin{tabular}{lcl}
+$x=(0,(2^{32}-1, 1))$ &;    & {\tiny $2^{32}-1 + 2^{32} = 858993458$}\\
+$y=(0, (2^{32}-2, 2^{32}-1))$ &;  &  {\tiny $2^{32}-2 + (2^{32}-1)*2^{32} = 18446744073709551614$.}
+\end{tabular}
+\begin{center}
+\begin{tabular}{|r|r|c|l|}\hline
+ $i$ & $c_i$ & $\gamma$ & \\\hline
+$0$ & $2^{32}-3$ & $\gamma \leftarrow 1$ & pois $2^{32}-1 + 2^{32}-2 \geq 2^{32}  $\\\hline
+$1$ & $1$ & $\gamma \leftarrow 1$ & pois $1+2^{32}-1 + 1 \geq 2^{32}  $\\\hline
+$2$ & $1$ && \\\hline
+\end{tabular}
+\end{center}
+
+Logo $x+y= (0, (2^{32}-3, 1,1))$ e 
+$$ 2^{32}-3 + 2^{32} + 2^{64} = (2^{32}-1 + 2^{32} ) + (2^{64} - 2) = 18446744074568544072.$$
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Comparar inteiros}
+
+\begin{block}{Igualdade}
+ Dois inteiros $x=(s,(a_0,\ldots, a_n))$ e $y=(s,(b_0,\ldots, b_m))$ são iguais se
+$$s=t \qquad n=m \qquad a_i=b_i \:\:\forall 0\leq i\leq n.$$
+\end{block}
+ 
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Comparar inteiros}
+
+\begin{block}{Ordem}
+ O inteiro $x=(s,(a_0,\ldots, a_n))$ e menor do que $y=(s,(b_0,\ldots, b_m))$ se e só se
+\begin{itemize}
+ \item[] $s<t$ ou
+ \item[] $(s=t) \wedge (n<m)$  ou 
+ \item[] $(s=t) \wedge (n=m) \wedge \exists 0\leq i \leq n: a_i<b_i \wedge \forall i<j\leq n: a_j=b_j$.
+\end{itemize}
+
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{algorithmic}
+\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(s,(b_0,\ldots, b_n))$
+\ENSURE {\bf TRUE} se $x=y$ e ${\bf FALSE}$ senão.
+\IF{$s==t \&\& n==m$}
+  \FOR{ $i=0,\ldots, n$ }
+    \IF {$a_i != b_i$} 
+      \RETURN FALSE
+    \ENDIF
+  \ENDFOR
+\ELSE
+  \RETURN FALSE
+\ENDIF
+\RETURN TRUE
+\end{algorithmic}
+
+\end{frame}
+
+
+\end{document}
+
+\begin{frame}
+
+2.2 A classes dos números racionais
+2.3 A classes dos inteiros modulares
+2.4 O template dos polinómios.
+2.5 Multiplicação de polinómios: Algoritmo de Karatsuba
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+
+
+
