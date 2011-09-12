@@ -1,0 +1,3 @@
+\beamer@endinputifotherversion {3.07pt}
+\select@language {portuguese}
+\beamer@sectionintoc {1}{2. Estruturas de dados}{2}{0}{1}

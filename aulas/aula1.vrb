@@ -1,0 +1,21 @@
+\frametitle {Classes}\par \begin{lstlisting}[language=C++]
+
+class triangulo {
+
+  int a,b,c ;
+  public:
+
+  triangulo (int lado1, int lado2, int lado3) {
+     a=lado1;  b=lado2;  c=lado3;
+  }
+
+  double Area() { ...  };
+};
+
+main() {
+  triangulo t(3,4,5);
+  cout << t.Area()<< endl;
+}
+
+\end{lstlisting}
+
