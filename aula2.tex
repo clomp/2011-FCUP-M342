@@ -11,7 +11,7 @@
 %\floatname{algorithm}{Função }
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
-
+\newcommand{\q}{\mathbf{q}}
 \newcommand{\ZZ}{\mathbb Z}
 \newcommand{\cvector}[1]{\mathrm{vector}(#1)}
 %\usetheme{Berlin}
@@ -30,7 +30,7 @@
 \title[M342]{M342 Álgebra Computacional}
 \author{Christian Lomp}
 \institute{FCUP}
-\date{12 de setembro de 2011}
+\date{14 de setembro de 2011}
 \begin{document}
 
 \begin{frame}
@@ -45,30 +45,46 @@
 
 \begin{frame}{\bf 2. Tipos de dados}{\bf 2.1 Representação de número nos computador e limitações}
 
-\begin{block}{Representação $b$-ária}
-Seja $b$ um número positivo. Qualquer número positvo $x\in \ZZ$ tem uma representação única:
-$$ x = (-1)^s a_0 + a_1b + a_2b^2 + a_3b_3 + \cdots a_nb^n$$
-onde $a_i \in \{0,1,\ldots, b-1\}$ e $s\in\{0,1\}$.
+\begin{block}{Representação $\q$-ária}
+Seja $\q$ um número positivo. Qualquer número positvo $x\in \ZZ$ tem uma representação única:
+$$ x = (-1)^s a_0 + a_1\q + a_2\q^2 + a_3\q^3 + \cdots a_n\q^n$$
+onde $a_i \in \{0,1,\ldots, \q-1\}$ e $s\in\{0,1\}$.
 \end{block}
+
+Representamos um inteiro $x$ pelo sinal $s$ e pelo vector dos coeficientes de representação $\q$-ária, i.e.
+$$x = (-1)^s {a_na_{n-1}\cdot a_1}_{\q}$$
+
+\end{frame}
+
+\begin{frame}
+ \begin{block}{Exemplo}
+  \begin{itemize}
+   \item $(342)_{10} = 1\cdot 2^8 + 1\cdot 2^6 + 1\cdot 2^4+1\cdot 2^2 + 1\cdot 2^1 = (101010110)_2$
+   \item $(342)_{10} = 1\cdot 3^5 + 1\cdot 3^4 + 2\cdot 3^2 = (110200)_3$
+   \item $(342)_{10} = 1\cdot {16}^2 + 5\cdot {16}^1 + 6\cdot {16}^0 =  (156)_{16}$   
+   \item $(342)_{10} = 5\cdot 8^2 + 2\cdot {8}^1 + 6\cdot {8}^0 =  (526)_{8}$   
+   \item $(342)_{8} = 3\cdot {8}^2 + 4\cdot {8}^1 + 2\cdot {8}^0 =  (226)_{10} = (1401)_5 = (E 2)_{16}$
+  \end{itemize}
+
+ \end{block}
 
 \end{frame}
 
 
 \begin{frame}{\bf 2.}{\bf 2.1 Representação de número nos computador e limitações}
-O tipo {\it unsigned int} pode representar números entre $0$ e $2^{32}-1$.
+O tipo {\it unsigned int} pode representar números entre $0$ e $2^{32}-1$. Seja $\q=2^{32}$.
 
 \begin{block}{Representação $2^{32}$-ária}
 Identificamos um tuple $x=(s,v)$ onde $s\in \{0,1\}$ $v=\cvector{a_0,a_1,\ldots, a_n}$ onde $0\leq a_i < 2^{32}$ com o número 
 $$ (-1)^s a_0 + a_12^{32} + a_22^{64} + a_32^{96} + \cdots a_n2^{32n}$$
 \end{block}
 
+
 \end{frame}
 
 
 
 \begin{frame}[fragile]{\bf 2.}{\bf 2.1 Representação de inteiros no computador}
-
-Um exemplo:
 
 \begin{lstlisting}[language=C++]
 #include <vector>
@@ -86,8 +102,55 @@ class inteiros {
 }
 
 \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Classes}
+
+\begin{enumerate} 
+ \item \pause Pode-se dizer que {\it Classes} são estruturas de dados com funções pre-definidos.
+\item \pause Uma classe contem um conjunto de variáveis (atributos) e certas funções (métodos).
+\item \pause Os atriubutos  e métodos podem ser privados ({\it private}) ou públicos ({\it public}).
+\end{enumerate}
 
 \end{frame}
+
+\begin{frame}[fragile]{STL vector}
+A classe {\it vector} é uma classe padrão de $C++$ e permite guardar uma lista de objectos (no caso de {\it vector $<$int$>$} é uma lista de inteiros).
+
+Alguns funções que {\it vector} oferece são:
+\begin{enumerate}
+ \item {\it push\_back} : adicionar um elemento no fim da lista
+\item {\it size} : tamanho da lista
+\item {\it insert}: inserir elemento numa posição
+\end{enumerate}
+
+\begin{lstlisting}[language=C++]
+ vector<int> lista;
+ lista.push_back(2);
+ lista.push_back(3);
+ cout << "No.Elementos:" <<  lista.size() << endl;
+ cout << "O primeiro elemento: " << lista[0] << endl;
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}{\bf 2.}{\bf Adição de inteiros}
+
+Sejam $x=\sum_{i=0}^n a_i \q^i$ e $y=\sum_{j=0}^n b_j \q^j$. Então 
+$$x+y = \sum_{i=0}^n (a_i+b_i) \q^i.$$
+Como $0\leq a_i, b_i \leq \q-1$, $ 0\leq a_i + b_i \leq 2\q-2.$
+
+Seja $\gamma_{-1} = 0$ e para todo $i\geq 0$ define
+{\small $$\gamma_i = \left\{ \begin{array}{cc} 0 & \mbox{ se } a_i+b_i+\gamma_{i-1} < \q\\ 1 & \mbox{ se } a_i+b_i+\gamma_{i-1} \geq \q \end{array} \right. \qquad
+ c_i = \left\{ \begin{array}{lc} a_i+b_i+\gamma_{i-1} & \mbox{ se } \gamma_i=0 \\ a_i+b_i+\gamma_{i-1}-\q &  \mbox{ se } \gamma_i=1 \end{array} \right. $$}
+Portanto $$x+y = \sum_{i=0}^{n+1} c_i \q^i.$$
+ 
+\end{frame}
+
+
+
 
 \begin{frame}[fragile]{\bf 2.}{\bf Adição de inteiros}
 \begin{algorithmic}
@@ -154,23 +217,63 @@ $$s=t \qquad n=m \qquad a_i=b_i \:\:\forall 0\leq i\leq n.$$
 
 \end{frame}
 
-\begin{frame}
 
+\begin{frame}[fragile]{\bf 2.}{\bf Subtracção de inteiros}
 \begin{algorithmic}
-\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(s,(b_0,\ldots, b_n))$
-\ENSURE {\bf TRUE} se $x=y$ e ${\bf FALSE}$ senão.
-\IF{$s==t \&\& n==m$}
-  \FOR{ $i=0,\ldots, n$ }
-    \IF {$a_i != b_i$} 
-      \RETURN FALSE
-    \ENDIF
-  \ENDFOR
-\ELSE
-  \RETURN FALSE
-\ENDIF
-\RETURN TRUE
+\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(s,(b_0,\ldots, b_n))$ tal que $y<x$.
+\ENSURE inteiro $z=(s, (c_0, \ldots, c_{n+1}))$ tal que $z=x-y$.
+\STATE $\gamma \leftarrow 0$ 
+\FOR{ $i=0,\ldots, n$ }
+  \STATE $c_i \leftarrow a_i-b_i-\gamma$
+  \IF {$c_i\geq 0$}
+        \STATE $c_i \leftarrow c_i + 2^{32}$
+        \STATE $\gamma \leftarrow 1$
+  \ELSE
+	\STATE $\gamma \leftarrow 0$
+  \ENDIF
+\ENDFOR
 \end{algorithmic}
 
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Multiplicação de inteiros}
+
+Seja $\q=2^{32}$.
+\begin{block}{Multiplicação}
+ Sejam $x=\sum_{i=0}^n a_i\q^i$ e $y=\sum_{j=0}^m b_j\q^j$. Então
+$$ xy = \sum_{i=0}^n \sum_{j=0}^m a_ib_j \q^{i+j}.$$
+Como $0\leq a_i, b_j < \q$, tem-se que $a_ib_j = c_{i,j} + d_{i,j}\q$ onde $0\leq c_{i,j}, d_{i,j} < \q$.
+\end{block}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Multiplicação de inteiros}
+Suponha que existe uma função {\bf mult}({\it int} a,{\it int} b) cujo resultado é um par $(c,d)$ de {\bf int} tal que 
+$$ab = c + 2^{32}d$$
+
+\begin{algorithmic}
+\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(t,(b_0,\ldots, b_m))$.
+\ENSURE inteiro $z=(u, (c_0, \ldots, c_{nm}))$ tal que $z=xy$.
+\STATE $z \leftarrow ( (s+t)\mathrm{mod} 2, (0))$ 
+\FOR{ $i=0,\ldots, n$ }
+ \FOR{ $j=0,\ldots, m$ }
+  \STATE $(c,d)\leftarrow {\mathbf{mult}}(a_i,b_j)$
+  \STATE $z \leftarrow z + c 2^{i+j}$
+  \STATE $z \leftarrow z + d 2^{i+j+1}$
+ \ENDFOR
+\ENDFOR
+\end{algorithmic}
+
+\end{frame}
+
+\begin{frame}{\bf 2.}{\bf Divisão de inteiros}
+ 
 \end{frame}
 
 
@@ -201,6 +304,4 @@ $$s=t \qquad n=m \qquad a_i=b_i \:\:\forall 0\leq i\leq n.$$
 4.9 Algoritmo de filiação de radicais
 4.10 Aplicação à robótica
 \end{frame}
-
-
 
