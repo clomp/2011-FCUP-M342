@@ -15,7 +15,7 @@ Uma introdução a linguagem C++ encontra-se nas páginas
 \url{http://www.inf.ufrgs.br/~johann/cpp2004/} e \url{http://www.cplusplus.com/doc/tutorial/}.
 
 \begin{enumerate}
-\exitem Escreva um programa em C++ que  com as seguintes características:
+\exitem Escreva um programa em C++ com as seguintes características:
 \begin{verbatim} 
 Input: um número positivo q, um número n
 Output: representação q-ária do número n
@@ -32,13 +32,13 @@ class Inteiros {
     Inteiros(unsigned int q, int n);
   
     void Print();
-    int Valor();
+    unsigned int Valor(); 
 }
 \end{verbatim}
 Onde \begin{itemize}
       \item o ``construtor'' $Inteiros(q,n)$ calcula os dígitos do inteiro $n$ na base $q$ e guarda-os no vector $coeficientes$;
       \item $Print()$ imprime a representação $q$-ária do número guardado;
-      \item $Valor()$ calcule o valor decimal do inteiro na representação $q$-ária.
+      \item $Valor()$ calcule o valor decimal do inteiro na representação $q$-ária (só se o inteiro é menor do que $4294967295$).
      \end{itemize}
 
 \exitem Calcue as representações $6$-ária de $123$, $8$-ária de $5667$ $256$-ária de $98121298$.
