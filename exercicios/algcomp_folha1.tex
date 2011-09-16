@@ -1,0 +1,52 @@
+\include{algcomp_folha_header}
+\usepackage{hyperref}
+\newcommand{\real}[1]{\underline{\mathbf{#1}}} 
+
+\begin{document}
+\writetitle{12.09.2011}{1}{1}
+
+
+\nextsect
+
+\sectitle{Introdução a linguagem C++}
+
+
+Uma introdução a linguagem C++ encontra-se nas páginas
+\url{http://www.inf.ufrgs.br/~johann/cpp2004/} e \url{http://www.cplusplus.com/doc/tutorial/}.
+
+\begin{enumerate}
+\exitem Escreva um programa em C++ que  com as seguintes características:
+\begin{verbatim} 
+Input: um número positivo q, um número n
+Output: representação q-ária do número n
+\end{verbatim}
+
+\exitem Crie a seguinte classe:
+\begin{verbatim} 
+class Inteiros {
+
+    vector<int> coeficientes;
+    unsigned int base;
+
+  public:
+    Inteiros(unsigned int q, int n);
+  
+    void Print();
+    int Valor();
+}
+\end{verbatim}
+Onde \begin{itemize}
+      \item o ``construtor'' $Inteiros(q,n)$ calcula os dígitos do inteiro $n$ na base $q$ e guarda-os no vector $coeficientes$;
+      \item $Print()$ imprime a representação $q$-ária do número guardado;
+      \item $Valor()$ calcule o valor decimal do inteiro na representação $q$-ária.
+     \end{itemize}
+
+\exitem Calcue as representações $6$-ária de $123$, $8$-ária de $5667$ $256$-ária de $98121298$.
+\exitem Calcue o valor decimal das representações $(10514321)_4$, $(6514326)_8$ e $(21012)_3$.
+\exitem Escreva uma função que soma dois números inteiros na representação $q$-ária.
+\end{enumerate}
+
+
+
+
+\end{document}
