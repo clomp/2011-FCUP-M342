@@ -1,0 +1,219 @@
+\documentclass{beamer}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{19 de setembro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+
+
+\section{2. Estruturas de dados}
+
+\begin{frame}{\bf 2. Estruturas de dados}{\bf A classe inteiro}
+---
+\end{frame}
+
+
+\begin{frame}{\bf 2.}{\bf Aritmética dos polinómios}
+\begin{block}{O anel dos polinómios}
+Um polinómio não nulo $f=\sum_{i=0}^n a_i x^i \in R[x]$ com coeficientes num anel comutativo $R$ é únicamente determinado pelos seus coeficientes $(a_0,a_1,\ldots, a_n)$ onde $a_n\neq 0$. Neste caso chama-se $n$ o {\it grau} do polinómio. $\grau{f}=n$. No caso do polinómio nulo $0$ escrevemos $\grau{0}=-\infty$.
+\end{block}
+Representamos polinómios pela sucesão dos seus coeficientes.
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Representação de polinómios com C++}
+
+\begin{lstlisting}[language=C++]
+#include <vector>
+#include <inteiro>
+
+class polinomio {
+
+  bool nulo;
+  vector<inteiro> coeficientes;
+
+public:
+  polinomio();
+  unsigned int grau();
+  inteiro leadingCoeficient();
+  polinomio operator + (polinomio);
+  polinomio operator - (polinomio);
+  polinomio operator * (polinomio);
+  ...
+}
+
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{\bf 2.}{\bf Adição de Polinómios}
+
+Sejam $f=\sum_{i=0}^n a_i x^i$ e $g=\sum_{j=0}^m b_j x^j$ com $n\leq m$. então 
+$$f+g = \sum_{i=0}^n (a_i+b_i) x^i  + \sum_{i=n+1}^m b_i x^i .$$
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Adição de Polinómios}
+\begin{algorithmic}
+\REQUIRE polinómios $f=(a_0,\ldots, a_n)$, $g=(b_0,\ldots, b_m))$ com $n\leq m$
+\ENSURE polinómio $h=(c_0, \ldots, c_m)$ tal que $h=f+g$.
+\FOR{ $i=0,\ldots, n$ }
+  \STATE $c_i \leftarrow a_i+b_i$
+\ENDFOR
+\FOR{ $i=n+1,\ldots, m$ }
+  \STATE $c_i \leftarrow b_i$
+\ENDFOR
+\end{algorithmic}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Comparar Polinómios}
+
+\begin{block}{Igualdade}
+ Dois polinómios não-nulos $f=(a_0,\ldots, a_n)$ e $g=(b_0,\ldots, b_m))$ são iguais se
+$$n=m \qquad a_i=b_i \:\:\forall 0\leq i\leq n.$$
+\end{block}
+\pause
+\begin{block}{Ordem} Sejam $f=(a_0,\ldots, a_n)$ e $g=(b_0,\ldots, b_m)$ polinómios não nulos. Então $f < g$ se e só se
+$$n < m  \vee \left( n=m  \wedge \exists 0 \leq i \leq n: [ a_i<b_i \wedge \forall i<j\leq n: a_j=b_j] \right).$$
+\end{block}
+ 
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Subtracção de inteiros}
+\begin{algorithmic}
+\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(s,(b_0,\ldots, b_n))$ tal que $y<x$.
+\ENSURE inteiro $z=(s, (c_0, \ldots, c_{n+1}))$ tal que $z=x-y$.
+\STATE $\gamma \leftarrow 0$ 
+\FOR{ $i=0,\ldots, n$ }
+  \STATE $c_i \leftarrow a_i-b_i-\gamma$
+  \IF {$c_i< 0$}
+        \STATE $c_i \leftarrow c_i + 2^{32}$
+        \STATE $\gamma \leftarrow 1$
+  \ELSE
+	\STATE $\gamma \leftarrow 0$
+  \ENDIF
+\ENDFOR
+\end{algorithmic}
+
+\end{frame}
+
+
+
+
+\begin{frame}{\bf 2.}{\bf Multiplicação de inteiros}
+\begin{block}{Multiplicação} Sejam $\q=2^{32}$, $x=\sum_{i=0}^n a_i\q^i$ e $y=\sum_{j=0}^m b_j\q^j$. Então
+$$ xy = \sum_{i=0}^n \sum_{j=0}^m a_ib_j \q^{i+j}.$$
+Como $0\leq a_i, b_j < \q$, tem-se que $a_ib_j = c_{i,j} + d_{i,j}\q$ onde $0\leq c_{i,j}, d_{i,j} < \q$.
+$$ xy = \sum_{i=0}^n \sum_{j=0}^m c_{i,j} \q^{i+j} + d_{i,j}\q^{i+j+1}.$$
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 2.}{\bf Multiplicação de inteiros}
+Suponha que existe uma função {\bf mult}({\it int} a,{\it int} b) cujo resultado é um par $(c,d)$ de {\bf int} tal que 
+$$ab = c + 2^{32}d$$
+
+\begin{algorithmic}
+\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(t,(b_0,\ldots, b_m))$.
+\ENSURE inteiro $z=(u, (c_0, \ldots, c_{nm}))$ tal que $z=xy$.
+\STATE $z \leftarrow ( (s+t)\mathrm{mod} 2, (0))$ 
+\FOR{ $i=0,\ldots, n$ }
+ \FOR{ $j=0,\ldots, m$ }
+  \STATE $(c,d)\leftarrow {\mathbf{mult}}(a_i,b_j)$
+  \STATE $z \leftarrow z + c 2^{(i+j)32}$
+  \STATE $z \leftarrow z + d 2^{(i+j+1)32}$
+ \ENDFOR
+\ENDFOR
+\end{algorithmic}
+
+\end{frame}
+\end{document}
+
+
+
+\begin{frame}{\bf 2.}{\bf Divisão com resto}
+ 
+Como dividir inteiros ?
+\[
+\begin{array}{rlcl}
+&6\q^3 + 3\q^2 + 4 & : & \underline{2\q^2 + \q + 1} \\
+-&\underline{(6\q^3 + 3\q^2 + 3\q)} && 3\q \\
+&-3\q +4  &&  \\
+\end{array} \]
+Portanto 
+$$6\q^3 + 3\q^2 + 4  = 3\q (2\q^2+\q +1 ) + (-3\q + 4)$$
+\end{frame}
+
+
+
+
+
+\begin{frame}
+
+2.2 A classes dos números racionais
+2.3 A classes dos inteiros modulares
+2.4 O template dos polinómios.
+2.5 Multiplicação de polinómios: Algoritmo de Karatsuba
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+
