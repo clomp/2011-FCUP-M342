@@ -16,6 +16,7 @@
 \newcommand{\ZZ}{\mathbb Z}
 \newcommand{\grau}[1]{\mathrm{grau}({#1})}
 \newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
 %\usetheme{Berlin}
 \usetheme[pageofpages=of,% String used between the current page and the
                          % total page count.
@@ -45,16 +46,50 @@
 
 \section{2. Estruturas de dados}
 
-\begin{frame}{\bf 2. Estruturas de dados}{\bf A classe inteiro}
----
+\begin{frame}[fragile]{\bf 2. Estruturas de dados}{\bf A classe inteiro}
+
+\lstset{language=C++,basicstyle=\tiny}
+\begin{lstlisting}[language=C++]
+#include <vector>
+#include <inteiro>
+
+class inteiro {
+
+  bool sinal;
+  unsigned int base;
+  vector<unsigned int> coeficientes;
+
+public:
+  inteiro();
+  void operator = (inteiro); // copiar 
+  bool operator < (inteiro); // comparar
+  bool operator == (inteiro); // comparar
+  inteiro operator + (inteiro); // somar
+  inteiro operator - (inteiro); // subtrair
+  inteiro operator * (inteiro); // multiplicar
+  inteiro operator / (inteiro); // quociente
+  inteiro operator % (inteiro);  // resto
+}
+
+\end{lstlisting}
 \end{frame}
 
 
 \begin{frame}{\bf 2.}{\bf Aritmética dos polinómios}
 \begin{block}{O anel dos polinómios}
-Um polinómio não nulo $f=\sum_{i=0}^n a_i x^i \in R[x]$ com coeficientes num anel comutativo $R$ é únicamente determinado pelos seus coeficientes $(a_0,a_1,\ldots, a_n)$ onde $a_n\neq 0$. Neste caso chama-se $n$ o {\it grau} do polinómio. $\grau{f}=n$. No caso do polinómio nulo $0$ escrevemos $\grau{0}=-\infty$.
+Um polinómio não nulo $f=\sum_{i=0}^n a_i x^i \in R[x]$ com coeficientes num anel comutativo $R$ é únicamente determinado pelos seus coeficientes $(a_0,a_1,\ldots, a_n)$ onde $a_n\neq 0$. \pause Neste caso chama-se $n$ o {\it grau} do polinómio. $\grau{f}=n$. No caso do polinómio nulo $0$ escrevemos $\grau{0}=-\infty$.
+\pause
+O coeficiente $a_n$ chama-se o {\bf coeficiente guia} ({\it leading coefficient}) denotado por $a_n=\lc{f}$.
 \end{block}
+\end{frame}
+
+\begin{frame}{\bf 2.}
 Representamos polinómios pela sucesão dos seus coeficientes.
+
+\pause 
+Dois polinómios não-nulos $f=(a_0,\ldots, a_n)$ e $g=(b_0,\ldots, b_m))$ são iguais se
+$$n=m \qquad a_i=b_i \:\:\forall 0\leq i\leq n.$$
+
 \end{frame}
 
 
@@ -93,12 +128,12 @@ $$f+g = \sum_{i=0}^n (a_i+b_i) x^i  + \sum_{i=n+1}^m b_i x^i .$$
 
 
 
-\begin{frame}[fragile]{\bf 2.}{\bf Adição de Polinómios}
+\begin{frame}[fragile]{\bf 2.}{\bf Adição/Subtração de Polinómios}
 \begin{algorithmic}
-\REQUIRE polinómios $f=(a_0,\ldots, a_n)$, $g=(b_0,\ldots, b_m))$ com $n\leq m$
-\ENSURE polinómio $h=(c_0, \ldots, c_m)$ tal que $h=f+g$.
+\REQUIRE polinómios $f=(a_0,\ldots, a_n)$, $g=(b_0,\ldots, b_m)$ com $n\leq m$
+\ENSURE polinómio $h=(c_0, \ldots, c_m)$ tal que $h=f\pm g$.
 \FOR{ $i=0,\ldots, n$ }
-  \STATE $c_i \leftarrow a_i+b_i$
+  \STATE $c_i \leftarrow a_i\pm b_i$
 \ENDFOR
 \FOR{ $i=n+1,\ldots, m$ }
   \STATE $c_i \leftarrow b_i$
@@ -108,84 +143,99 @@ $$f+g = \sum_{i=0}^n (a_i+b_i) x^i  + \sum_{i=n+1}^m b_i x^i .$$
 \end{frame}
 
 
-\begin{frame}[fragile]{\bf 2.}{\bf Comparar Polinómios}
 
-\begin{block}{Igualdade}
- Dois polinómios não-nulos $f=(a_0,\ldots, a_n)$ e $g=(b_0,\ldots, b_m))$ são iguais se
-$$n=m \qquad a_i=b_i \:\:\forall 0\leq i\leq n.$$
-\end{block}
-\pause
-\begin{block}{Ordem} Sejam $f=(a_0,\ldots, a_n)$ e $g=(b_0,\ldots, b_m)$ polinómios não nulos. Então $f < g$ se e só se
-$$n < m  \vee \left( n=m  \wedge \exists 0 \leq i \leq n: [ a_i<b_i \wedge \forall i<j\leq n: a_j=b_j] \right).$$
-\end{block}
- 
+
+\begin{frame}{\bf 2.}{\bf Multiplicação de polinómios}
+%\begin{block}{Multiplicação} 
+Sejam $f=(a_0,\ldots, a_n)$ e $g=(b_0,\ldots, b_m))$ dois polinómios não-nulos.
+Então
+$$ fg = (c_0, \ldots, c_{nm}) \qquad \mbox{ com } c_k=\sum_{i+j=k}a_i b_j .$$
+\pause Alternativamente 
+$$ fg = \sum_{i=0}^n a_ix^ig.$$
+onde $a_ix^i$ é optido por uma translação e multiplicação escalar: 
+$$(b_0,\ldots, b_m) \mapsto (\underbrace{0,\ldots, 0}_{i-\mbox{posições}},a_ib_0,\ldots, a_ib_m).$$
+%\end{block}
 \end{frame}
 
 
-\begin{frame}[fragile]{\bf 2.}{\bf Subtracção de inteiros}
+\begin{frame}[fragile]{\bf 2.}{\bf Multiplicação de polinómios}
 \begin{algorithmic}
-\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(s,(b_0,\ldots, b_n))$ tal que $y<x$.
-\ENSURE inteiro $z=(s, (c_0, \ldots, c_{n+1}))$ tal que $z=x-y$.
-\STATE $\gamma \leftarrow 0$ 
+\REQUIRE polinómios $f=(a_0,\ldots, a_n)$, $g=(b_0,\ldots, b_m)$.
+\ENSURE polinómio $h=(c_0, \ldots, c_{nm})$ tal que $h=fg$.
+\STATE $h \leftarrow (0)$ 
 \FOR{ $i=0,\ldots, n$ }
-  \STATE $c_i \leftarrow a_i-b_i-\gamma$
-  \IF {$c_i< 0$}
-        \STATE $c_i \leftarrow c_i + 2^{32}$
-        \STATE $\gamma \leftarrow 1$
-  \ELSE
-	\STATE $\gamma \leftarrow 0$
-  \ENDIF
+  \STATE $z \leftarrow shift(i,g)$
+  \STATE $h \leftarrow h + a_i*z$;
 \ENDFOR
+\RETURN h
 \end{algorithmic}
 
 \end{frame}
 
-
-
-
-\begin{frame}{\bf 2.}{\bf Multiplicação de inteiros}
-\begin{block}{Multiplicação} Sejam $\q=2^{32}$, $x=\sum_{i=0}^n a_i\q^i$ e $y=\sum_{j=0}^m b_j\q^j$. Então
-$$ xy = \sum_{i=0}^n \sum_{j=0}^m a_ib_j \q^{i+j}.$$
-Como $0\leq a_i, b_j < \q$, tem-se que $a_ib_j = c_{i,j} + d_{i,j}\q$ onde $0\leq c_{i,j}, d_{i,j} < \q$.
-$$ xy = \sum_{i=0}^n \sum_{j=0}^m c_{i,j} \q^{i+j} + d_{i,j}\q^{i+j+1}.$$
-\end{block}
-\end{frame}
-
-
-\begin{frame}[fragile]{\bf 2.}{\bf Multiplicação de inteiros}
-Suponha que existe uma função {\bf mult}({\it int} a,{\it int} b) cujo resultado é um par $(c,d)$ de {\bf int} tal que 
-$$ab = c + 2^{32}d$$
-
+\begin{frame}[fragile]{\bf 2.}{\bf Multiplicação por um monómio}
 \begin{algorithmic}
-\REQUIRE inteiros $x=(s,(a_0,\ldots, a_n))$, $y=(t,(b_0,\ldots, b_m))$.
-\ENSURE inteiro $z=(u, (c_0, \ldots, c_{nm}))$ tal que $z=xy$.
-\STATE $z \leftarrow ( (s+t)\mathrm{mod} 2, (0))$ 
-\FOR{ $i=0,\ldots, n$ }
- \FOR{ $j=0,\ldots, m$ }
-  \STATE $(c,d)\leftarrow {\mathbf{mult}}(a_i,b_j)$
-  \STATE $z \leftarrow z + c 2^{(i+j)32}$
-  \STATE $z \leftarrow z + d 2^{(i+j+1)32}$
- \ENDFOR
+\REQUIRE polinómio $g=(b_0,\ldots, b_m)$ e exponente $i$
+\ENSURE polinómio $h=shift(i,g) = x^ig$
+\STATE $h \leftarrow (\underbrace{0,\ldots, 0}_{i-\mbox{posições}})$ 
+\FOR{ $j=0,\ldots, m$ }
+  \STATE $h_{i+j} \leftarrow b_j$
 \ENDFOR
+\RETURN h
 \end{algorithmic}
 
 \end{frame}
-\end{document}
+
+\begin{frame}[fragile]{\bf 2.}{\bf Multiplicação por um escalar}
+\begin{algorithmic}
+\REQUIRE polinómio $g=(b_0,\ldots, b_m)$ e escalar $a$
+\ENSURE polinómio $h=a*g$
+\FOR{ $j=0,\ldots, m$ }
+  \STATE $h_j \leftarrow a*b_j$
+\ENDFOR
+\RETURN h
+\end{algorithmic}
+
+\end{frame}
 
 
 
 \begin{frame}{\bf 2.}{\bf Divisão com resto}
- 
-Como dividir inteiros ?
-\[
-\begin{array}{rlcl}
-&6\q^3 + 3\q^2 + 4 & : & \underline{2\q^2 + \q + 1} \\
--&\underline{(6\q^3 + 3\q^2 + 3\q)} && 3\q \\
-&-3\q +4  &&  \\
-\end{array} \]
-Portanto 
-$$6\q^3 + 3\q^2 + 4  = 3\q (2\q^2+\q +1 ) + (-3\q + 4)$$
+\begin{block}{}
+Dados inteiros $a$ e $b$ existem inteiros $q$ e $r$ tais que 
+$$ a = qb + r, \qquad \mbox{com } |r|<|b|.$$
+\pause Dado um anel comutativo $R$ e polinómios $f,g\in R[x]$ com $g\neq 0$ queremos encontrar polinómios $q$ e $r$ tais que 
+$$ f=qg+r \qquad \mbox{com } \grau{r}<\grau{g}.$$
+\end{block}
+\pause
+Nem sempre isto é possível: $R=\ZZ$, $f=x^2$ e $g=2x+1$.
 \end{frame}
+
+
+\begin{frame}
+$$\polylongdiv[stage=10,style=A]{3x^4+2x^3+x+5}{x^2+2x+3}$$
+\end{frame}
+
+\begin{frame}[fragile]{\bf 2.}{\bf Divisão de polinómios}
+\begin{algorithmic}
+\REQUIRE polinómios $f=(a_0,\ldots, a_n)$, $g=(b_0,\ldots, b_m)$ com $m\leq n$ e $b_m$ invertível.
+\ENSURE polinómios $q=(c_0, \ldots, c_k)$ e $r=(d_0, \ldots, d_l)$ tal que $g=qg+r$ e $\grau{r}<\grau{g}$.
+	\STATE $r\leftarrow g$
+	\STATE $q\leftarrow (0)$
+	\FOR {$i=n-m, n-m-1, \ldots , 0$}
+		\IF{$\grau{r}=m+i$}
+			\STATE $q\leftarrow q+\lc{r}b_m^{-1}x^i$
+			\STATE $r\leftarrow r-\lc{r}b_m^{-1}x^i g$
+		\ENDIF
+	\ENDFOR
+	\RETURN $(q,r)$
+\end{algorithmic}
+
+\end{frame}
+
+%%Programing example of division and of rest in C++
+
+
+\end{document}
 
 
 

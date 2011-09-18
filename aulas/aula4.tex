@@ -1,0 +1,287 @@
+\documentclass{beamer}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\mdc}[2]{\mathrm{mdc}({#1}, {#2})}
+\newcommand{\mmc}[2]{\mathrm{mmc}({#1}, {#2})}
+\newcommand{\quo}[2]{{#1}\, \mathrm{quo} \, {#2}}
+\newcommand{\rem}[2]{{#1}\, \mathrm{rem} \, {#2}}
+
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{21 de setembro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{\bf 2.2 Os numeros reais}{\bf {o algoritmo de Euclid}}
+\begin{enumerate}
+\item O algoritmo de Euclid para inteiros permite determinar o {\bf máximo divisor comum} de dois inteiros.\pause
+\item O algoritmo de Euclid permite reduzier quocientes de inteiros $\frac{a}{b} = \frac{a'}{b'}$ onde $\mdc{a'}{b'}=1$.\pause
+\item O algotitmo aplica-se também para polinómios.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Definição} Um domínio integral $R$ com uma função $d:R\rightarrow \NN\cup\{-\infty\}$  chama-se um {\bf Domínio Euclideano} se 
+$$\forall a,b \in R \mbox{ com } b\neq 0: \qquad \exists q,r \in R \: a=qb+r \:\mbox{ com } d(r)<d(b).$$
+\pause
+O elemento $q$, denotado por $q=a/b$ ou $q=\quo{a}{b}$, diz-se o {\bf quociente} e $r$, denotado por $r=a\%b$ ou $q=\rem{a}{b}$ diz-se o {\bf resto}. 
+
+\pause Em geral $a/b$ e $a\%b$ não são necessáriamente únicos.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Exemplos}
+\begin{enumerate}
+\item $R=\ZZ$ e $d:\ZZ \rightarrow \NN$ é dado por $d(a)=|a|, \: \forall a\in \ZZ$.\pause
+\item $R=F[x]$, $F$ um corpo e $d:F[x] \rightarrow \NN\cup \{-\infty\}$  dado por $d(f)=\grau{f}$ se $f\neq 0$ e $\grau{0}=-\infty$.\pause
+\item $R=\ZZ[i] = \{a+\imath b\in\CC \mid a,b\in\ZZ\}$, os inteiros de Gauss, e $d(a+\imath b) = a^2+b^2$.\pause
+\item $R=F$ um corpo e $d(a)=1$ se $a\neq 0$ e $d(a)=0$ se $a=0$.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+Se $d(b)=-\infty$ então $b=0$, pois se $d(b)=-\infty$ e $b\neq 0$, então existem $q,r \in R$ tais que 
+$$ b=qb+r \qquad \mbox{ com } d(r) < d(b)=-\infty$$
+o que é impossível, pois $d(r)\geq -\infty$ para qualquer $r\in R$.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Definição}
+Sejam $a$ e $b$ elementos num domínio de integridade $R$. Digamos que $a$ {\bf divide} $b$, denotado por $a|b$ se e só se 
+$$ \exists c\in R: \qquad b=ac.$$
+\end{block}
+\pause
+
+Exercício: Sejam $a,b$ elementos de um domínio de integridade $R$.
+\begin{enumerate}
+\item $a|0$ se e só se $a=0$;\pause
+\item $a|1$ se e só se $a$ é invertível;\pause
+\item $a|b$ e $b|a$ se e só se existe um elemento invertível $u\in R$ tais que $a=ub$.\pause
+\end{enumerate}
+
+\begin{block}{Definição}
+Dois elementos $a$ e $b$ chamam-se {\bf associados} se $a=ub$ para um elemento invertível $u\in R$. Denotamos este facto por $a\sim b$.
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\begin{block}{Definição}
+Sejam $a,b,c$ elementos dum domínio de integridade $R$. O elemento $c$ diz-se {\bf máximo divisor comum} de $a$ e $b$, denotado por $c=\mdc{a}{b}$ se 
+\begin{enumerate}
+\item[(i)] $c|a$ e $c|b$;
+\item[(ii)] se $d|a$ e $d|b$ então $d|c$, para todo $d\in R$.
+\end{enumerate}
+
+\pause O elemento $c$ diz-se {\bf mínimo múltiplo comum} de $a$ e $b$, denotado por $c=\mmc{a}{b}$ se 
+\begin{enumerate}
+\item[(i)] $a|c$ e $b|c$;
+\item[(ii)] se $a|d$ e $b|d$ então $c|d$, para todo $d\in R$.
+\end{enumerate}\pause
+Em $\ZZ$ define-se que $\mdc{a}{b}$ e $\mmc{a}{b}$ sejam também positivos e portanto únicos.
+
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}
+\begin{block}{Propriedades de $\mdc{-}{-}$ em $\ZZ$} Sejam $a,b,c \in \ZZ$: 
+\begin{enumerate}
+\item[(i)] $\mdc{a}{b}=|a| \Longleftrightarrow a | b$;
+\item[(ii)] $\mdc{a}{a}=\mdc{a}{0}=|a|$ e $\mdc{a}{1}=1$.
+\item[(iii)] $\mdc{a}{b}=\mdc{b}{a}$ (comutatividade);
+\item[(iv)] $\mdc{a}{\mdc{b}{c}} = \mdc{\mdc{a}{b}}{c}$ (associatividade);
+\item[(v)]  $\mdc{ca}{cb} = |c|\mdc{a}{b}$ (distributividade);
+\item[(vi)] $|a|=|b| \Rightarrow \mdc{a}{c}=\mdc{b}{c}$.
+\item[(vii)] $\mdc{a}{b} = \mdc{b}{a\%b}$
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Algoritmo de Euclid}
+\begin{algorithmic}
+\REQUIRE $a,b \in R$ onde $R$ é um domínio de Euclid.
+\ENSURE Um máximo divisor comum $c$ de $a$ e $b$;
+	\STATE $r_0 \leftarrow a$
+	\STATE $r_1 \leftarrow b$
+	\STATE $i \leftarrow 1$
+	\WHILE{$r_i\neq 0$}
+		\STATE $r_{i+1}\leftarrow (r_{i-1}\% r_i)$
+		\STATE $i\leftarrow i+1$
+	\ENDWHILE
+	\RETURN $r_i-1$
+\end{algorithmic}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Algoritmo de Euclid em C++}
+\lstset{language=C++,basicstyle=\tiny}
+\begin{lstlisting}
+int mdc(int a, int b)
+{
+  int r0=a;
+  int r1=b;
+  while (r1!= 0)
+  {
+    int aux=r1;
+    r1=r0%r1;
+    r0=aux; 
+  }
+  return r0;
+}
+\end{lstlisting}
+\pause
+
+\begin{lstlisting}[language=C++]
+int mdc(int a, int b)
+{
+  if (b==0) 
+    return a;
+  else 
+    return mdc(b,a%b)  ;
+};
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Algoritmo de Euclid estendido}
+O máximo divisior comum $\mdc{a}{b}$ de dois inteiro é combinação linear de $a$ e $b$.
+\begin{block}{Exemplo}
+\begin{eqnarray*}
+126 &=& 3\times 35 + 21 \\
+35 &=& 1\times 21 + 14 \\
+21 &=& 1 \times 14 + 7\\
+14 &=& 2\times 7 + 0
+\end{eqnarray*}
+{\tiny $$7 = 21 - 1\times 14 = 21 - 1\times (35 - 1\times 21) = 2\times (126 - 3\times 35) - 1\times 35 = 2\times 126 + (-7)\times 35.$$}
+Logo $\mdc{126}{35} = 7 = 2\times 126 + (-7)\times 35$.
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Algoritmo de Euclid estendido}
+\begin{algorithmic}
+\REQUIRE $a,b \in R$ onde $R$ é um domínio de Euclid.
+\ENSURE $l\in \NN, r_i,s_i,t_i \in R$ para $0\leq i\leq l+1$ e $q_i\in R$ para $1\leq i \leq l$.
+	\STATE $r_0 \leftarrow a$, $s_0 \leftarrow 1$, $t_0\leftarrow 0$
+	\STATE $r_1 \leftarrow b$, $s_1 \leftarrow 0$, $t_1\leftarrow 1$
+	\STATE $i \leftarrow 1$
+	\WHILE{$r_i\neq 0$}
+		\STATE $q_i \leftarrow (r_{i-1}/ r_i)$
+		\STATE $r_{i+1}\leftarrow (r_{i-1}\% r_i)$
+		\STATE $s_{i+1}\leftarrow s_{i-1} - q_is_i$
+		\STATE $t_{i+1}\leftarrow t_{i-1} - q_it_i$
+		\STATE $i\leftarrow i+1$
+	\ENDWHILE
+	\STATE $l\leftarrow i-1$
+	\RETURN $l, r_i, s_i, t_i$ para $0\leq i \leq l+1$ e $q_i$ para $1\leq i \leq l$.
+\end{algorithmic}
+
+\end{frame}
+
+
+\begin{frame}{}
+\begin{block}{Exemplo}
+$R=\ZZ$, $a=126$ e $b=35$:
+$$\begin{array}{|r|r|r|r|r|}\hline
+i & q_i & r_i & s_i & t_i \\\hline
+0 &   & 126 & 1 &0 \\
+1 & 3 & 35 & 0 &1 \\
+2 & 1 & 21 & 1 & -3 \\
+3 & 1 & 14 & -1 & 4 \\
+4 &  2 & 7 & {\bf 2} & {\bf -7} \\
+5 &   & 0 & -5 & 18 \\\hline
+\end{array}$$
+\end{block}
+$$7 = 2\times 126 + (-7)\times 35.$$
+\end{frame}
+
+\begin{frame}{}
+\begin{block}{Exemplo}
+$R=\QQ[x]$, $a=18x^3-42x^2+30x-6$ e $b=-12x^2+10x-2$:
+$$\begin{array}{|r|r|r|r|r|}\hline
+i & q_i                         &               r_i         & s_i                        & t_i \\\hline
+0 &                             & 18x^3-42x^2+30x-6         & 1                          & 0 \\
+1 & -\frac{3}{2}x + \frac{9}{4} &      -12x^2+10x-2         & 0                          & 1 \\
+2 & -\frac{8}{3}x + \frac{4}{3} &  \frac{9}{2}x-\frac{3}{2} &{\bf 1}                     & {\bf \frac{3}{2}x-\frac{9}{4}} \\
+3 &                             &                         0 & \frac{8}{3}x - \frac{4}{3} & 4x^2-8x+4 \\\hline 
+\end{array}$$
+\end{block}
+$$ \boxed{\frac{9}{2}x-\frac{3}{2}  = 18x^3-42x^2+30x-6 +  \left(\frac{3}{2}x-\frac{9}{4}\right)\left(-12x^2+10x-2\right)  }$$
+\end{frame}
+
+
+\end{document}
+
+
+
+
+
+2.2 A classes dos números racionais
+2.3 A classes dos inteiros modulares
+2.4 O template dos polinómios.
+2.5 Multiplicação de polinómios: Algoritmo de Karatsuba
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+

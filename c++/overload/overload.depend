@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1316389150 source:/Users/christianlomp/Documents/Teaching/2011/2011-FCUP-M342/c++/overload/main.cpp
+	<iostream>
+	<vector>
+
