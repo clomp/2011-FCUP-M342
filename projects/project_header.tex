@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{a4wide}
+%\usepackage[latin1]{inputenc}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+\newcommand{\nlim}[1]{\displaystyle{\lim_{n\rightarrow \infty} \: {#1}}}
+\newcommand{\ser}{\sum_{n=1}^\infty \:}
+\newcommand{\sern}[1]{{\sum_{n={#1}}^\infty\:}}
+\newcommand{\dsum}{\displaystyle\sum}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\mdc}{\mathrm{mdc}}
+\newcommand{\arctg}{\mathrm{arc\:tg}}
+\newcommand{\sen}[1]{\mathrm{sen}(#1)}
+\renewcommand{\deg}[1]{\mathrm{grau}(#1)}
+\newcommand{\Aut}[1]{\mathrm{Aut}(#1)}
+\newcommand{\sgn}[1]{\mathrm{sgn}(#1)}
+\newcommand{\MatrixZ}[4]{\left(\begin{array}{rr} #1 & #2 \\ #3 & #4 \end{array}\right)}
+%\newcommand{\cos}{\mathrm{cos}}
+\newcommand{\senh}{\mathrm{sh}}
+%\newcommand{\cosh}{\mathrm{cosh}}
+\newcommand{\len}{\mathrm{len}}
+\newcommand{\arctgh}{\mathrm{arc\:tgh}}
+
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
+
+
+%\newcounter{kapitel}
+\newcounter{abschnitt}
+\newcounter{uebung}
+\newcommand{\reset}[1]{\setcounter{#1}{1}}
+%\newcommand{\nextchap}{\addtocounter{kapitel}{1} \reset{abschnitt}\reset{uebung}}
+\newcommand{\nextsect}{\addtocounter{abschnitt}{1} \reset{uebung} }
+\newcommand{\nextexer}{\addtocounter{uebung}{1}}
+%\newcommand{\getex}{(\arabic{kapitel}.\arabic{abschnitt}.\arabic{uebung})}
+\newcommand{\getex}{(\arabic{abschnitt}.\arabic{uebung})}
+\newcommand{\exitem}{\item[\getex] \nextexer}
+\newcommand{\tpcexitem}{\item[\tpc \getex] \nextexer}
+\renewcommand{\exp}[1]{\mathbf{e}^{#1}}
+\newcommand{\sectitle}[1]{\begin{center}{\bf{\arabic{abschnitt}. \underline{#1}}}\end{center}}
+
+%\setlength{\marginparwidth}{1.2in}
+%\let\oldmarginpar\marginpar
+%\renewcommand\marginpar[1]{\-\oldmarginpar[\raggedleft\footnotesize #1]%
+%{\raggedright\footnotesize #1}}
+
+\newcommand{\tpc}{{\bf $\mathbf{\star} \:\: $}}
+
+
+
+%\newcommand{\writetitle}[6]{\bigskip \setcounter{kapitel}{#3}\setcounter{abschnitt}{#4}\reset{uebung}
+\newcommand{\writetitle}[6]{\bigskip \setcounter{abschnitt}{#3}\reset{uebung}
+\begin{tabular}{lp{6cm}r}
+Faculdade de Ciências da Universidade do Porto && Folha \bf{{#2}}\\
+Departamento de Matemática&& #1\\
+Christian Lomp&&
+\end{tabular}
+\bigskip\begin{center}
+\bf{\Large{Projeto de Álgebra Computacional (M342)}}\\[3mm] 
+\end{center}\bigskip}
+
+\pagestyle{empty}
+
+%\flushright{ }
+ \addtolength\topmargin{-2cm}
+ \setlength{\textwidth}{17cm}
+\addtolength\textheight{3cm} 
+%\setlength{\textheight}{26cm}
+ \setlength{\evensidemargin}{-5mm}
+ \setlength{\oddsidemargin}{-5mm}

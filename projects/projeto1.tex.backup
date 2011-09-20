@@ -1,0 +1,70 @@
+\include{project_header}
+\usepackage{hyperref}
+\newcommand{\shift}[1]{\setlength{\leftskip}{20 mm}{#1}\medskip}
+
+
+
+\begin{document}
+\writetitle{12.09.2011}{1}{1}
+
+\nextsect
+
+\sectitle{A classe inteiro}
+
+{\bf Objetivo:} Definir uma classe em C++ que permite a aritmética de inteiros em precisão arbitrária (``arbitrary-precision arithmetic'').
+
+\nextexer{\bf Especificação da classe:} A classe $<$inteiro $>$ deve representar inteiros na base $\q=10^9$ e deve 
+utilizar a classe $<$vector$>$ para guardar os coeficientes da representação $\q$-ária.
+
+A classe $<$inteiro$>$ deve ter a seguinte estrutura:
+
+\begin{lstlisting}[language=C++]
+class inteiro {
+
+  bool negativo; 
+  vector <unsigned int> coeficientes;
+
+  public:
+    inteiro();
+    inteiro(int n);
+    inteiro(bool, vector<unsigned int>);
+    void operator = (inteiro);
+    bool operator < (inteiro);
+    bool operator == (inteiro);
+    inteiro operator + (inteiro);
+    inteiro operator - (inteiro);
+    inteiro operator * (inteiro);
+    inteiro operator / (inteiro);
+    inteiro operator % (inteiro);
+
+    string ConvertToString();
+    inteiro ConvertToInteiro(string);
+
+}
+\end{lstlisting}
+
+\nextexer{\bf Especificações das funções:}
+
+\begin{enumerate}
+\item {\bf O construtor:}
+\begin{lstlisting}[language=C++]
+inteiro::inteiro() { ... }
+\end{lstlisting}
+\shift{Criação dum objecto {\it inteiro} que representa o número $0$.}
+\begin{lstlisting}[language=C++]
+inteiro::inteiro(int n) { ... }
+\end{lstlisting}
+\shift{Criação dum objecto {\it inteiro} que representa o número $n$.}
+\begin{lstlisting}[language=C++]
+inteiro::inteiro(bool sinal, vector<unsigned int> coef) { ... }
+\end{lstlisting}
+\shift{ Criação dum objecto {\it inteiro} que representa o número dado pela representação $(sinal, coef)$.}
+\end{enumerate}
+
+
+
+
+\end{document}
+
+
+
