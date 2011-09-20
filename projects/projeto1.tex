@@ -5,7 +5,7 @@
 
 
 \begin{document}
-\writetitle{12.09.2011}{1}{1}
+\writetitle{para entregar até 26.10.2011}{1}{1}
 
 \nextsect
 
@@ -28,9 +28,10 @@ class inteiro {
     inteiro();
     inteiro(int n);
     inteiro(bool, vector<unsigned int>);
-    void operator = (inteiro);
     bool operator < (inteiro);
+    bool operator > (inteiro);
     bool operator == (inteiro);
+    bool operator != (inteiro);
     inteiro operator + (inteiro);
     inteiro operator - (inteiro);
     inteiro operator * (inteiro);
@@ -78,12 +79,6 @@ bool inteiro::operator > (inteiro b) { ... }
 \end{lstlisting}
 \shift{O valor de retorno é {\it true} se o inteiros representado pelo objeto actual é maior do que o inteiro representado pelo objeto $b$.}
 
-\item \setlength{\leftskip}{4mm} {\bf Atribuir:}
-\begin{lstlisting}[language=C++]
-void inteiro::operator = (inteiro b) { ... }
-\end{lstlisting}
-\shift{A representação do inteiro $b$ será copiada para o objeto actual.}
-
 \item \setlength{\leftskip}{4mm} {\bf Aritmética:}
 \begin{lstlisting}[language=C++]
 inteiro inteiro::operator + (inteiro b) { ... }
@@ -106,6 +101,73 @@ inteiro inteiro::operator % (inteiro b) { ... }
 \end{lstlisting}
 \shift{O valor de retorno é um objeto {\it inteiro} que representa o resto da divisão dos inteiros representados pelo objeto actual e pelo objeto $b$.}
 \end{enumerate}
+
+\sectitle{Problemas adicionais}
+
+\nextexer{} Escreva uma função {\bf inteiro factorial(inteiro)} que permite calcular o factorial de um inteiro. Calcue $100!$ e $1000!$.
+
+\nextexer{} Escreva uma função {\bf inteiro dvisor(inteiro)} que encontre o menor divisor maior que $1$ de um inteiro. Factorize o número $10000000001$ em números primos.
+\newpage
+
+
+\sectitle{Recurso Auxiliar}
+
+Podemo utilisar as seguintes funções que permite a conversação dos coeficientes entre o formato {\it vectores$<$unsigned int$>$} e o formato de texto {\it string}.
+
+Para utilizar as funções precisa de incluir as bibliotecas $<$vector$>$, $<$string$>$, $<$cstdlib$>$ e $<$sstream$>$.
+
+\begin{lstlisting}[language=C++]
+#include <vector>
+#include <string>
+#include <cstdlib>
+#include <sstream>
+\end{lstlisting}
+
+BASE e BASE\_LEN são constantes que são preciso para a conversação.
+\begin{lstlisting}[language=C++]
+#define BASE 1000000000
+#define BASE_LEN 9
+
+
+string ConvertVectorToString(vector<unsigned int> v)
+{
+	int n=v.size();
+	ostringstream vector_string;
+	for(int i=n-1;i>=0;i--)
+	{
+		if(i<n-1)
+		{
+		  int r=v[i]%BASE;
+		  for(int j=0;j<BASE_LEN-r;j++)
+			vector_string << "0";
+		};
+		vector_string << v[i];
+        };
+	return vector_string.str();
+};
+
+vector<unsigned int> ConvertStringToVector(string s)
+{
+	vector<unsigned int> v;
+        int n=s.length();
+	int q=n/BASE_LEN;
+	int r=n%BASE_LEN;
+	string sub;
+        for(int i=q-1;i>=0;i--)
+	{
+		sub=s.substr(r+i*BASE_LEN,BASE_LEN);				
+		v.push_back(atoi(sub.c_str()));
+	};
+	if(r>0)
+	{ 
+		sub=s.substr(0,r);
+		v.push_back(atoi(sub.c_str()));
+	};
+        return v;
+};
+\end{lstlisting}
+
+
 
 
 \end{document}
