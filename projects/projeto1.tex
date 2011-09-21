@@ -28,6 +28,7 @@ class inteiro {
     inteiro();
     inteiro(int n);
     inteiro(bool, vector<unsigned int>);
+    inteiro(string);
     bool operator < (inteiro);
     bool operator > (inteiro);
     bool operator == (inteiro);
@@ -60,6 +61,12 @@ inteiro::inteiro(int n) { ... }
 inteiro::inteiro(bool sinal, vector<unsigned int> coef) { ... }
 \end{lstlisting}
 \shift{ Criação dum objecto {\it inteiro} que representa o número dado pela representação $(sinal, coef)$.}
+\begin{lstlisting}[language=C++]
+inteiro::inteiro(string s) { ... }
+\end{lstlisting}
+\shift{ Criação dum objecto {\it inteiro} que representa o número positivo dado pelo texto em $s$.}
+
+
 
 \item \setlength{\leftskip}{4mm} {\bf Comparações:}
 \begin{lstlisting}[language=C++]
@@ -100,6 +107,15 @@ inteiro inteiro::operator / (inteiro b) { ... }
 inteiro inteiro::operator % (inteiro b) { ... }
 \end{lstlisting}
 \shift{O valor de retorno é um objeto {\it inteiro} que representa o resto da divisão dos inteiros representados pelo objeto atual e pelo objeto $b$.}
+\item \setlength{\leftskip}{4mm} {\bf Funções de Conversação:}
+\begin{lstlisting}[language=C++]
+string inteiro::ConvertToString();
+\end{lstlisting}
+\shift{Converte o inteiro num texto (string) utilizando a função {\it ConvertVectorToString}.}
+\begin{lstlisting}[language=C++]
+inteiro inteiro::ConvertToInteiro(string s);
+\end{lstlisting}
+\shift{Converte o texto em $s$ num inteiro positivo utilizando a função {\it ConvertStringToVector}}
 \end{enumerate}
 
 \sectitle{Problemas adicionais}
