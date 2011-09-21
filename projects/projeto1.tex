@@ -5,13 +5,13 @@
 
 
 \begin{document}
-\writetitle{para entregar até 26.10.2011}{1}{1}
+\writetitle{entrega: 26.10.2011}{1}{1}
 
 \nextsect
 
 \sectitle{A classe inteiro}
 
-{\bf Objetivo:} Definir uma classe em C++ que permite a aritmética de inteiros em precisão arbitrária (``arbitrary-precision arithmetic'').
+{\bf Objetivo:} Definir uma classe em C++ que permita a aritmética de inteiros em precisão arbitrária (``arbitrary-precision arithmetic'').
 
 \nextexer{\bf Especificação da classe:} A classe $<$inteiro $>$ deve representar inteiros na base $\q=10^9$ e deve 
 utilizar a classe $<$vector$>$ para guardar os coeficientes da representação $\q$-ária.
@@ -65,54 +65,54 @@ inteiro::inteiro(bool sinal, vector<unsigned int> coef) { ... }
 \begin{lstlisting}[language=C++]
 bool inteiro::operator == (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é {\it true} se os inteiros representados pelo objeto actual e pelo objeto $b$ são iguais.}
+\shift{O valor de retorno é {\it true} se os inteiros representados pelo objeto atual e pelo objeto $b$ forem iguais.}
 \begin{lstlisting}[language=C++]
 bool inteiro::operator != (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é {\it true} se os inteiros representados pelo objeto actual e pelo objeto $b$ não são iguais.}
+\shift{O valor de retorno é {\it true} se os inteiros representados pelo objeto atual e pelo objeto $b$ não forem iguais.}
 \begin{lstlisting}[language=C++]
 bool inteiro::operator < (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é {\it true} se o inteiros representado pelo objeto actual é menor do que o inteiro representado pelo objeto $b$.}
+\shift{O valor de retorno é {\it true} se o inteiros representado pelo objeto atual for menor do que o inteiro representado pelo objeto $b$.}
 \begin{lstlisting}[language=C++]
 bool inteiro::operator > (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é {\it true} se o inteiros representado pelo objeto actual é maior do que o inteiro representado pelo objeto $b$.}
+\shift{O valor de retorno é {\it true} se o inteiros representado pelo objeto atual for maior do que o inteiro representado pelo objeto $b$.}
 
 \item \setlength{\leftskip}{4mm} {\bf Aritmética:}
 \begin{lstlisting}[language=C++]
 inteiro inteiro::operator + (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é um objeto {\it inteiro} que representa a soma dos inteiros representados pelo objeto actual e pelo objeto $b$.}
+\shift{O valor de retorno é um objeto {\it inteiro} que representa a soma dos inteiros representados pelo objeto atual e pelo objeto $b$.}
 \begin{lstlisting}[language=C++]
 inteiro inteiro::operator - (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é um objeto {\it inteiro} que representa a diferenca dos inteiros representados pelo objeto actual e pelo objeto $b$.}
+\shift{O valor de retorno é um objeto {\it inteiro} que representa a diferenca dos inteiros representados pelo objeto atual e pelo objeto $b$.}
 \begin{lstlisting}[language=C++]
 inteiro inteiro::operator * (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é um objeto {\it inteiro} que representa a multiplicação dos inteiros representados pelo objeto actual e pelo objeto $b$.}
+\shift{O valor de retorno é um objeto {\it inteiro} que representa a multiplicação dos inteiros representados pelo objeto atual e pelo objeto $b$.}
 \begin{lstlisting}[language=C++]
 inteiro inteiro::operator / (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é um objeto {\it inteiro} que representa o quociente da divisão dos inteiros representados pelo objeto actual e pelo objeto $b$.}
+\shift{O valor de retorno é um objeto {\it inteiro} que representa o quociente da divisão dos inteiros representados pelo objeto atual e pelo objeto $b$.}
 \begin{lstlisting}[language=C++]
 inteiro inteiro::operator % (inteiro b) { ... }
 \end{lstlisting}
-\shift{O valor de retorno é um objeto {\it inteiro} que representa o resto da divisão dos inteiros representados pelo objeto actual e pelo objeto $b$.}
+\shift{O valor de retorno é um objeto {\it inteiro} que representa o resto da divisão dos inteiros representados pelo objeto atual e pelo objeto $b$.}
 \end{enumerate}
 
 \sectitle{Problemas adicionais}
 
 \nextexer{} Escreva uma função {\bf inteiro factorial(inteiro)} que permite calcular o factorial de um inteiro. Calcue $100!$ e $1000!$.
 
-\nextexer{} Escreva uma função {\bf inteiro dvisor(inteiro)} que encontre o menor divisor maior que $1$ de um inteiro. Factorize o número $10000000001$ em números primos.
+\nextexer{} Escreva uma função {\bf inteiro divisor(inteiro)} que encontre o menor divisor maior que $1$ de um inteiro. Factorize o número $10000000001$ em números primos.
 \newpage
 
 
 \sectitle{Recurso Auxiliar}
 
-Podemo utilisar as seguintes funções que permite a conversação dos coeficientes entre o formato {\it vectores$<$unsigned int$>$} e o formato de texto {\it string}.
+Podem utilisar as seguintes funções que permitem a conversação dos coeficientes entre o formato {\it vectores$<$unsigned int$>$} e o formato de texto {\it string}.
 
 Para utilizar as funções precisa de incluir as bibliotecas $<$vector$>$, $<$string$>$, $<$cstdlib$>$ e $<$sstream$>$.
 
