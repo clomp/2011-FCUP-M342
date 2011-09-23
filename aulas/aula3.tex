@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[handout]{beamer}
 \usepackage{algorithmic}
 \usepackage{polynom}
 \usepackage[english, portuguese]{babel}
@@ -218,8 +218,8 @@ $$\polylongdiv[stage=10,style=A]{3x^4+2x^3+x+5}{x^2+2x+3}$$
 \begin{frame}[fragile]{\bf 2.}{\bf Divisão de polinómios}
 \begin{algorithmic}
 \REQUIRE polinómios $f=(a_0,\ldots, a_n)$, $g=(b_0,\ldots, b_m)$ com $m\leq n$ e $b_m$ invertível.
-\ENSURE polinómios $q=(c_0, \ldots, c_k)$ e $r=(d_0, \ldots, d_l)$ tal que $g=qg+r$ e $\grau{r}<\grau{g}$.
-	\STATE $r\leftarrow g$
+\ENSURE polinómios $q=(c_0, \ldots, c_k)$ e $r=(d_0, \ldots, d_l)$ tal que $f=qg+r$ e $\grau{r}<\grau{g}$.
+	\STATE $r\leftarrow f$
 	\STATE $q\leftarrow (0)$
 	\FOR {$i=n-m, n-m-1, \ldots , 0$}
 		\IF{$\grau{r}=m+i$}
