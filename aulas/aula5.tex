@@ -1,0 +1,175 @@
+\documentclass[handout]{beamer}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\mdc}[2]{\mathrm{mdc}({#1}, {#2})}
+\newcommand{\mmc}[2]{\mathrm{mmc}({#1}, {#2})}
+\newcommand{\quo}[2]{{#1}\, \mathrm{quo} \, {#2}}
+\newcommand{\rem}[2]{{#1}\, \mathrm{rem} \, {#2}}
+
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{26 de setembro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{\bf 2.2 Os numeros racionais} 
+
+Seja $R$ um domínio integral e $Q$ o corpo das fracções, i.e.
+$$Q= \left\{ \: \frac{a}{b} \: \mid a,b\in R \wedge b\neq 0 \right\}$$
+onde $\frac{a}{b} := \{ (x,y) \in R^2 \mid y\neq 0 \wedge ay=bx.\}$.
+\pause
+
+\begin{enumerate}
+\item $R=\ZZ$, $Q=\QQ$;
+\item $R=\CC[x]$, $Q=\CC(x) = \mbox{ funções racionais}$;
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{\bf 2.2 Os numeros racionais} 
+
+Seja $R$ um domínio Euclideano então 
+$$ \frac{a}{b} = \frac{c}{d}$$
+onde $a=c\mdc{a}{b}$ e $b=d=\mdc{a}{b}.$
+
+Vamos supor que $\frac{a}{b}$ é sempre na forma reduzida, i.e. $\mdc{a}{b}=1$.
+\pause
+
+$$\frac{a}{b} + \frac{x}{y} = \frac{ay+bx}{xy}$$
+$$\frac{a}{b} \cdot \frac{x}{y} = \frac{ax}{by}$$
+
+
+\end{frame}
+
+\begin{frame}[fragile]{A classe dos números racionais}
+\lstset{language=C++}
+\begin{lstlisting}
+#include "inteiro.h"
+
+class racional
+{
+	inteiro numerador;
+	inteiro denumerador;
+	
+	public: 
+		racional();
+		racional(inteiro,inteiro);
+		racional operator + (racional);
+		racional operator * (racional);
+		racional inverso();
+		...
+	
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{A classe dos números racionais}
+\lstset{language=C++}
+\begin{lstlisting}
+
+racional racional::racional(inteiro n, inteiro d)
+{
+	numerador=n/mdc(n,d);
+	denumerador=d/mdc(n,d);
+};
+
+racional racional::operator + (racional b)
+{
+	inteiro num=numerdor*b.denumerador + denumerador*b.numerador;
+	inteiro denum=denumerador*b.denumerador;
+	racional output(num,denum);
+	return output;
+};
+
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{\bf O teorema chinês do resto}
+
+Solução de sistemas de congruências de números relativamente primos $p_1, \ldots, p_k$
+$$\left\{ \begin{array}{rcl} x &\equiv& a_1 \mod p_1 \\ x &\equiv& a_2 \mod p_2 \\ \vdots &&\\
+x &\equiv& a_k \mod p_k\end{array}\right.$$
+Seja $Q_j = \prod_{i\neq j} p_i$ para todo $1\leq j\leq k$. Então 
+$$1=\mdc{Q_j}{p_j} = u_jQ_j + v_jp_j \qquad \Rightarrow \qquad  a_j \equiv a_ju_j Q_j \mod p_j.$$
+A solução é portanto
+$$ x = a_1u_1Q_1 + a_2u_2Q_2 + \ldots + a_ku_kQ_k \mod p_1\cdots p_k.$$
+
+
+\end{frame}
+
+
+
+\end{document}
+
+
+
+
+
+2.2 A classes dos números racionais
+2.3 A classes dos inteiros modulares
+2.4 O template dos polinómios.
+2.5 Multiplicação de polinómios: Algoritmo de Karatsuba
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+
