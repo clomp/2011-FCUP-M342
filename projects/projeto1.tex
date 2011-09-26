@@ -151,14 +151,18 @@ string ConvertVectorToString(vector<unsigned int> v)
 	ostringstream vector_string;
 	for(int i=n-1;i>=0;i--)
 	{
-		if(i<n-1)
-		{
-		  int r=v[i]%BASE;
-		  for(int j=0;j<BASE_LEN-r;j++)
-			vector_string << "0";
-		};
-		vector_string << v[i];
-        };
+	  unsigned int z=v[i];
+	  if(i<n-1)
+	  {
+            int s=BASE/10;
+            while(z%s == z)
+            {
+                vector_string << "0";
+                s=s/10;
+            };
+	  };
+	  vector_string << z;        
+	};
 	return vector_string.str();
 };
 
