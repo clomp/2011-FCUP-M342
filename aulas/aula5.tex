@@ -1,4 +1,5 @@
-\documentclass[handout]{beamer}
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
 \usepackage{algorithmic}
 \usepackage{polynom}
 \usepackage[english, portuguese]{babel}
@@ -42,7 +43,7 @@
 \title[M342]{M342 Álgebra Computacional}
 \author{Christian Lomp}
 \institute{FCUP}
-\date{26 de setembro de 2011}
+\date{26 e 28 de setembro de 2011}
 \begin{document}
 
 \begin{frame}
@@ -141,6 +142,245 @@ $$ x = a_1u_1Q_1 + a_2u_2Q_2 + \ldots + a_ku_kQ_k \mod p_1\cdots p_k.$$
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{\bf 2.3 A classes dos inteiros modulares}
+\begin{block}{Ideias} 
+\begin{enumerate}
+\item Um {\it ideal} de um anel $R$ é um subgrupo aditivo $I$ de $R$ tal que $ab \in I$ para todo $a\in R$ e $b\in I$.
+\item Dado um subconjunto $X\subseteq R$ o menor ideal $I$ de $R$ que contém $X$ chama-se o {\it ideal gerado por $X$} e é denotamos por $I=\langle X \rangle$.\pause
+\item Dado um elmento $a\in R$ os múltiplos de $a$ formam um ideal de $R$ que é igual ao ideal gerado por $\{x\}$.
+$$ \langle a \rangle = Ra = \{ ba  \mid b \in R\}.$$\pause
+\item O ideal  $I=\langle a_1, \ldots, a_n\rangle =\left\{ \sum_{i=1}^n b_ia_i \mid b_1, \ldots, b_n \in R\right\}.$
+\end{enumerate}
+\end{block}
+\end{frame}
+ 
+ \begin{frame}
+ \begin{block}{Exemplos}
+ \begin{enumerate}
+  \item Ideais de $\ZZ$ são da forma $n\ZZ  = \{ an \mid a \in \ZZ\}$.\pause
+    \item Ideais de $\RR[x]$ são da forma $ \langle f(x) \rangle = \{g(x)f(x) \mid g(x)\in \RR[x]\}$.\pause
+  \item O subconjunto $\{2f(x) + xg(x) \mid f(x),g(x) \in \ZZ[x]\}$ é um ideal de $\ZZ[x]$ que não é gerado por só um elemento.
+ \end{enumerate}
+ \end{block}
+ \end{frame}
+ 
+ 
+\begin{frame}{\bf 2.3 A classes dos inteiros modulares}
+\begin{block}{Classes laterais}
+\begin{enumerate}
+\item A classe lateral à esquerda $a+I$ de um elemento $a\in R$ módulo um ideal $I$ é o subconjunto 
+ $$ \overline{a}=a + I := \{ a + b | b\in I\} \subseteq R$$ \pause
+ \item Para $a,b \in R$ tem-se que 
+ $$a+I = b+I \Leftrightarrow a-b \in I.$$
+ \end{enumerate}
+ \end{block}
+ \end{frame}
+ 
+ \begin{frame}{}
+ \begin{block}{Exemplos}
+ \begin{enumerate}
+  \item Para $m\in \ZZ$ a classe lateral de $a$ módulo $\ZZ m$ é 
+  $$\overline{a}=a + m\ZZ  = \{\mbox{ os números cujo resto da divisão por $m$ é $a\% m$}\}.$$\pause
+  Para $m=2$ só temos duas classes.
+  $$ \overline{0}=0 + 2\ZZ = \{ \mbox { os números pares }\},$$
+  $$ \overline{1}=1 + 2\ZZ = \{ \mbox { os números ímpares }\}.$$\pause
+  \item Em geral existem exactamente $m$ classes laterais módulo $m$.
+
+ \end{enumerate}
+\end{block}
+\end{frame}
+
+ \begin{frame}{}
+ \begin{block}{Exemplos}
+ \begin{enumerate}
+  \item Para $f(x) \in \RR[x]$ 
+    $$g(x) + \langle f(x) \rangle  = \left\{ 
+    \begin{array}{l} \mbox{ os polinómios cujo resto da divisão por $f(x)$}\\ \mbox{ é $g(x)\% f(x)$} \end{array} \right\}.$$\pause
+  \item Para $f(x)=x^2+1\in \RR[x]$ temos que qualquer classe lateral tem a forma
+  $$ a + bx + \langle x^2+1\rangle $$
+  onde $a,b \in \RR$.
+  
+ \end{enumerate}
+ \end{block}
+ \end{frame}
+
+ 
+\begin{frame}{\bf 2.3 A classes dos inteiros modulares}
+\begin{block}{Anel quociente}
+\begin{enumerate} 
+\item  O anel quociente $R/I$ de $R$ módulo o ideal $I$ é o conjunto das classes laterais:
+ $$R/I = \{ a+I | a\in R \}.$$\pause
+\item As operações em $R/I$ são:
+$$ (a+I) + (b+I) = (a+b) + I $$
+$$ (a+I) \cdot (b+I) = (ab) + I,$$
+para $a,b \in I$.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+ \begin{frame}{}
+ \begin{block}{Exemplos}
+ \begin{enumerate}
+  \item Para $m\in \ZZ$, tem-se que $$\ZZ/ m \ZZ = \ZZ_m = \{ \overline{0}, \overline{1}, \ldots, \overline{m-1}\}.$$\pause
+  \item Para $f(x)\in \RR[x]$ não-nulo, o anel quociente $\RR[x]/\langle f(x) \rangle$ tem dimensão $n=\mathrm{grau}(f(x))$ e base 
+  $ \{ \overline{1}, \overline{x}, \ldots, \overline{x^{n-1}}\}$  como espaço vectorial sobre $\RR$.\pause
+  \item Para $f(x)=x^2+1$ tem-se que
+  $$ \RR[x]/\langle x^2+1\rangle \simeq \CC \qquad \overline{a+bx} \mapsto a+\imath b.$$\pause
+  \item Para $f(x)=x^2+1 \in \ZZ[x]$ tem-se que 
+  $$ \ZZ[x]/\langle x^2+1\rangle \simeq \ZZ[\imath].$$
+ \end{enumerate}
+ \end{block}
+ \end{frame}
+
+
+
+\begin{frame}{\bf 2.3 A classes dos inteiros modulares}
+\begin{block}{Teorema}
+Seja $R$ um domínio Euclideano e $I=\langle m \rangle$ o ideal gerado por um elemento $m\in R$.
+Para qualquer elemento $a\in R$ tem-se que 
+$a+\langle m \rangle$ é invertível em $R/\langle m \rangle$ se e só se $\mdc{a}{m} \sim 1$
+\end{block}
+\end{frame}
+
+
+ \begin{frame}{}
+ \begin{block}{Definição}
+Um elemento não invertível $p\in R$ diz-se irredutível (ou primo) se $a\mid p$ então $a\sim 1$ ou $a\sim p$.
+ \end{block}\pause
+
+ \begin{block}{Corolário}
+Seja $R$ um domínio Euclideano. Então $\overline{R}=R/\langle m \rangle$ é um corpo se e só se $m$ é irredutível.
+ \end{block}\pause
+ 
+\medskip
+{\bf Prova:}
+Se $m$ for irredutível e $a\in R$ então $\mdc{a}{m} \sim 1$ ou $\mdc{a}{m} \sim p$. 
+Se $\mdc{a}{m}\sim m$, então $m|a$ e $\overline{a} = \overline{0}$.
+
+ \end{frame}
+
+\begin{frame}{}
+\begin{enumerate}
+\item $\ZZ_m$ corpo se e só se $m$ é primo.\pause
+\item $K[x]/\langle f(x)\rangle$ é corpo se e só se $f(x)$ é um polinómio irredutível.\pause
+\item $\ZZ_2[x]/\langle x^2+x+1\rangle$ é corpo com $4$ elementos!\pause
+\item {\bf Galois:} para qualquer $n \geq 1$ e número primo $p$ existe um polinómio irredutível $f(x)\in \ZZ_p[x]$ de grau $n$. Logo existe um corpo com $p^n$ elementos.
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+Como calcular os inversos em $R/\langle m \rangle$ ?\pause
+\begin{block}{Inversos}
+Sejam $a,m \in R$ com $\mdc{a}{m} \sim 1$.\\
+Pelo Algoritmo estendido de Euclides existem $x,y \in R$ tais que 
+$$ 1 = xa + ym \qquad \mbox{ou seja } \qquad 1-xa \in \langle m \rangle \Leftrightarrow \overline{1}=\overline{x}\overline{a}.$$ 
+Logo $\overline{x}$ é o inverso de $\overline{a}$ em $R/\langle m \rangle$.
+\end{block}
+\end{frame}
+
+\begin{frame}{\bf Equações Diofantinas Lineares}
+A equação diofantinas lineares:
+$$ a_1x_1 + a_2x_2 + \ldots + a_n x_n = c,$$
+com $a_1, \ldots, a_n, c \in \ZZ$ tem soluções $(x_1, \ldots, x_n)\in \ZZ^n$ se e só se $\mathrm{mdc}(a_1,\ldots, a_n) | c$.
+\end{frame}
+
+\begin{frame}{\bf Equações Diofantinas Lineares}
+$$ax+by=c\qquad \Leftrightarrow \qquad a'x+b'y = c'$$
+onde $a'=\frac{a}{\mdc{a}{b}}, b'=\frac{b}{\mdc{a}{b}}, c'=\frac{c}{\mdc{a}{b}}$.
+
+Existem $s,t\in \ZZ$ tais que $1=sa'+tb'$ e $c'=c'sa'+c'tb'$.
+
+\begin{eqnarray*}
+&\Rightarrow &a'(x-c's)+b'(y-c't) = c'-c'=0\\
+&\Leftrightarrow& a'(x-c's)=b'(c't-y) \\
+&\Rightarrow& a' | (c't-y) \qquad \mbox{ porque } \mdc{a'}{b'}=1\\
+&\Rightarrow& c't-y = a'n, \qquad n\in \ZZ \\
+&\Rightarrow& y = c't-a'n, \qquad n\in \ZZ \\
+&\Rightarrow& x = c't+b'n, \qquad n\in \ZZ
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}[fragile]{A classe dos inteiros módulares}
+\lstset{language=C++}
+\begin{lstlisting}
+
+class modular
+{
+	unsigned int modulo;
+	int numero;
+	
+	int mdc(int,int);
+	
+	public: 
+		modular(unsigned int,int);
+		modular operator + (modular);
+		modular operator - (modular);
+		modular operator * (modular);
+		bool invertivel();
+		modulear inverso ();
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{A classe dos inteiros módulares}
+\lstset{language=C++,basicstyle=\tiny}
+\begin{lstlisting}
+modular(unsigned int n, int a)
+{
+	base=n;
+	numero=a%n;
+};
+
+modular modular::operator + (modular b)
+{
+	if (b.base == base) 
+		return modular(base,b.numero+numero)
+};
+
+bool invertivel()
+{
+	return (mdc(numero,base)==1);
+};
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Algoritmo de Euclid em C++}
+\lstset{language=C++,basicstyle=\tiny}
+\begin{lstlisting}
+int mdc(int a, int b, int* x, int* y)
+{
+	int r0,s0,t0,r1,s1,t1;
+	r0=a;	s0=1;	t0=0;
+	r1=b;	s1=0;	t1=1;
+	
+	while(r1!=0)
+	{
+	  int q = r0/r1;	  
+	  int h = r0%r1; r0=r1; r1=h;
+	  h=s0-q*s1; s0=s1; s1=h;
+	  h=t0-q*t1; t0=t1; t1=h;
+	};
+	(*x)=s0;
+	(*y)=t0;
+	return r0;
+};
+
+int main()
+{
+		int a,b,x,y;
+		x=0;
+		y=0;
+		cin >> a >> b;
+		cout << "mdc=" << mdc(a,b,&x,&y);
+		cout << " = " << x << "*" << a << " + "<<  y << "*" << b << endl;
+}
+\end{lstlisting}
+\end{frame}
 
 
 \end{document}
