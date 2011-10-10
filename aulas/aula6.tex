@@ -1,0 +1,308 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+
+\usepackage[center]{caption}
+
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\mdc}[2]{\mathrm{mdc}({#1}, {#2})}
+\newcommand{\mmc}[2]{\mathrm{mmc}({#1}, {#2})}
+\newcommand{\quo}[2]{{#1}\, \mathrm{quo} \, {#2}}
+\newcommand{\rem}[2]{{#1}\, \mathrm{rem} \, {#2}}
+
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{10 de Outubro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{\bf Equações Diofantinas Lineares}
+A equação diofantinas lineares:
+$$ a_1x_1 + a_2x_2 + \ldots + a_n x_n = c,$$
+com $a_1, \ldots, a_n, c \in \ZZ$ tem soluções $(x_1, \ldots, x_n)\in \ZZ^n$ se e só se $\mathrm{mdc}(a_1,\ldots, a_n) | c$.
+\end{frame}
+
+\begin{frame}{\bf Equações Diofantinas Lineares}
+$$ax+by=c\qquad \Leftrightarrow \qquad a'x+b'y = c'$$
+onde $a'=\frac{a}{\mdc{a}{b}}, b'=\frac{b}{\mdc{a}{b}}, c'=\frac{c}{\mdc{a}{b}}$.
+
+Existem $s,t\in \ZZ$ tais que $1=sa'+tb'$ e $c'=c'sa'+c'tb'$.
+
+\begin{eqnarray*}
+&\Rightarrow &a'(x-c's)+b'(y-c't) = c'-c'=0\\
+&\Leftrightarrow& a'(x-c's)=b'(c't-y) \\
+&\Rightarrow& a' | (c't-y) \qquad \mbox{ porque } \mdc{a'}{b'}=1\\
+&\Rightarrow& c't-y = a'n, \qquad n\in \ZZ \\
+&\Rightarrow& y = c't-a'n, \qquad n\in \ZZ \\
+&\Rightarrow& x = c't+b'n, \qquad n\in \ZZ
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}[fragile]{A classe dos inteiros módulares}
+\lstset{language=C++}
+\begin{lstlisting}
+
+class modular
+{
+	unsigned int modulo;
+	int numero;
+	
+	int mdc(int,int);
+	
+	public: 
+		modular(unsigned int,int);
+		modular operator + (modular);
+		modular operator - (modular);
+		modular operator * (modular);
+		bool invertivel();
+		modulear inverso ();
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{A classe dos inteiros módulares}
+\lstset{language=C++,basicstyle=\tiny}
+\begin{lstlisting}
+modular(unsigned int n, int a)
+{
+	base=n;
+	numero=a%n;
+};
+
+modular modular::operator + (modular b)
+{
+	if (b.base == base) 
+		return modular(base,b.numero+numero)
+};
+
+bool invertivel()
+{
+	return (mdc(numero,base)==1);
+};
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Algoritmo de Euclid em C++}
+\lstset{language=C++,basicstyle=\tiny}
+\begin{lstlisting}
+int mdc(int a, int b, int* x, int* y)
+{
+	int r0,s0,t0,r1,s1,t1;
+	r0=a;	s0=1;	t0=0;
+	r1=b;	s1=0;	t1=1;
+	
+	while(r1!=0)
+	{
+	  int q = r0/r1;	  
+	  int h = r0%r1; r0=r1; r1=h;
+	  h=s0-q*s1; s0=s1; s1=h;
+	  h=t0-q*t1; t0=t1; t1=h;
+	};
+	(*x)=s0;
+	(*y)=t0;
+	return r0;
+};
+
+int main()
+{
+		int a,b,x,y;
+		x=0;
+		y=0;
+		cin >> a >> b;
+		cout << "mdc=" << mdc(a,b,&x,&y);
+		cout << " = " << x << "*" << a << " + "<<  y << "*" << b << endl;
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{\bf 2.5 O Algoritmo de Karatsuba}
+Multiplicação rápida de polinómios.
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=2]{Anatolii_Karatsuba.jpg}
+  \end{center}
+
+  \caption*{Anatolii Karatsuba (1937-2008)}
+  \label{demTP}
+\end{figure}
+\end{frame}
+
+\begin{frame}{\bf 2.5 O Algoritmo de Karatsuba}
+Multiplicações são "caras". O algoritmo classico da mulitplicação de dois polinómios de grau $n$ precisa $O(n^2)$ multiplicações:
+$$ \left(\sum_{i=0}^n a_i x^i \right)\left( \sum_{j=0}^n b_j x^j \right) = \sum_{i=0}^n \sum_{j=0}^n a_ib_j x^{i+j}$$
+
+Podemos fazer melhor ?
+\end{frame}
+
+\begin{frame}{\bf 2.5 O Algoritmo de Karatsuba}
+Se $f=f_1 x^m + f_0$ e $g=g_1 x^m + g_0$ com $f_0,f_1,g_0,g_1$ polinómios de grau menor que $m$.
+\begin{eqnarray*} 
+fg &=& f_1g_1 x^{2m} + (f_1g_0+f_0g_1) x^m + f_0g_0 \qquad \mbox{\color{red}{ 4 multiplicações}} \\\pause
+   &=& \underbrace{f_1g_1}_u x^{2m} + ( \underbrace{(f_0+f_1)(g_0+g_1)}_w-\underbrace{f_1g_1}_u-\underbrace{f_0g_0}_v) x^m + \underbrace{f_0g_0}_v \\\pause
+   &=& u x^{2m} + ( w-u-v) x^m + v \qquad \mbox{ \color{green}{\bf 3 multiplicações}} 
+\end{eqnarray*}
+onde $$ u=f_1g_1 \qquad v=f_0g_0 \qquad w=(f_0+f_1)(g_0+g_1)$$\pause
+pois 
+$$ w=(f_0+f_1)(g_0+g_1)=f_0g_0+f_1g_0+f_0g_1+f_1g_1 = u+v + (f_0g_1+f_1g_0).$$
+\end{frame}
+
+\begin{frame}[fragile]{\bf 2.5 O Algoritmo de Karatsuba}{\bf Dividir e conquistar}
+\begin{algorithmic}
+\REQUIRE polinómios $f,g$
+\ENSURE $Karatsuba(f,g)=fg$
+	\STATE $m\leftarrow \lceil max(grau(f),grau(g))/2 \rceil$
+    \IF {$m<2$} \RETURN {$f\cdot g$ multiplicação usual}
+	\ELSE
+		\STATE $u\leftarrow Karatsuba(f_1,g_1)$
+		\STATE $v\leftarrow Karatsuba(f_0,g_0)$
+		\STATE $w\leftarrow Karatsuba(f_0+f_1,g_0+g_1)$
+		\RETURN {$u\cdot x^{2m} + (w-u-v)\cdot x^m + v$}
+	\ENDIF
+\end{algorithmic}
+\end{frame}
+
+\begin{frame}[fragile]{\bf 2.5 O Algoritmo de Karatsuba}{\bf Dividir e conquistar}
+\begin{block}{Teorema}
+O algoritmo de Karatsuba precisa $O(n^{\log_2(3)})$ multiplicações.
+\end{block}\pause
+
+\medskip
+
+\begin{tabular}{|c|c|c|c|}\hline
+$n=2^k$ & Clássico $4^k$& Karatsuba $3^k$ & percentagem \\\hline
+$4$ & $16$ & $9$ & $\sim 56\%$\\\hline
+$8$ & $64$ & $27$ & $\sim 42\%$ \\\hline
+$16$ & $256$ & $81$ & $\sim 31\%$\\\hline
+$32$ & $1024$ & $243$ & $\sim 23\%$\\\hline
+$64$ & $4096$ & $729$ & $\sim 17\%$\\\hline
+$128$ & $16384$ & $2187$ & $\sim 13\%$ \\\hline
+$256$ & $65536$ & $6561$ & $\sim 10\%$\\\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}{\bf Implementação do algoritmo de Karatsuba}
+Decomposição $f=f_1 x^m + f_0$ pelo quociente e resto:
+$$ f_1 = f / x^m \qquad f_0 = f \% x^m$$
+que só ``cortam'' o vector dos coeficientes em duas partes, i.e. se 
+$f=(a_0, a_1, \ldots, a_ n)$ então 
+$$f_0 = f\%x^m = (a_0, \ldots, a_{m-1})$$
+$$f_1 = f/x^m = (a_m, \ldots, a_n).$$
+
+A multiplicação por $x^k$ é um ``shift'', i.e. 
+$$f\cdot x^k = (\underbrace{0, \ldots, 0}_{k-\mbox{vezes}}, a_0, \ldots, a_n).$$
+\end{frame}
+\begin{frame}[fragile]
+\lstset{language=C++}%,basicstyle=\tiny}
+\begin{lstlisting}
+polinomio polinomio::karatsuba(polinomio f, polinomio g)
+{
+  int maximo=max(f.coef.size(),g.coef.size());
+  int d=maximo/2 + maximo%2;
+  
+  if (d<2) return f*g;
+  else {
+    polinomio f0=f.rem(d);    polinomio f1=f.quo(d);
+    polinomio g0=g.rem(d);    polinomio g1=g.quo(d);
+
+    polinomio u=karatsuba(f1,g1);
+    polinomio v=karatsuba(f0,g0);
+    polinomio w=karatsuba(f0+f1,g0+g1);
+
+    return u.shift(2*d)+(w-u-v).shift(d)+v;
+  };
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\bf 2.5 O Algoritmo de Karatsuba}{\bf para inteiros}
+\begin{algorithmic}
+\REQUIRE inteiros $a=(a_0,\ldots, a_{n}),b=(b_0, \ldots, b_{k})$ na base $\q$
+\ENSURE $Karatsuba(a,b)=ab$
+	\STATE $m\leftarrow \lceil max(n,k)/2 \rceil$
+    \IF {$m<2$} \RETURN {$a\cdot b$ multiplicação usual}
+	\ELSE
+		\STATE $a'\leftarrow (a_0,\ldots, a_{m-1}),\qquad a''\leftarrow (a_m,\ldots, a_{n});$
+		\STATE $b'\leftarrow (b_0,\ldots, b_{m-1}),\qquad b''\leftarrow (b_m,\ldots, b_{k});$
+		\STATE $u\leftarrow Karatsuba(a',b')$
+		\STATE $v\leftarrow Karatsuba(a'',b'')$
+		\STATE $w\leftarrow Karatsuba(a'+a'', b'+b'')$
+		\RETURN {$v\cdot \q^{2m} + (w-u-v)\cdot \q^m + u$}
+	\ENDIF
+\end{algorithmic}
+\end{frame}
+
+
+\end{document}
+
+
+
+
+
+2.2 A classes dos números racionais
+2.3 A classes dos inteiros modulares
+2.4 O template dos polinómios.
+2.5 Multiplicação de polinómios: Algoritmo de Karatsuba
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+
