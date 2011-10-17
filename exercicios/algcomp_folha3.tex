@@ -1,0 +1,69 @@
+\include{algcomp_folha_header}
+\usepackage{hyperref}
+\newcommand{\real}[1]{\underline{\mathbf{#1}}} 
+\newcommand{\mod}{\mathrm{mod}\:}
+
+\begin{document}
+\writetitle{17.10.2011}{3}{2.5}
+
+
+\nextsect
+
+\sectitle{Polinómios}
+
+\begin{enumerate}
+\item Define a seguinte classe {\it Polinomio} em C++:
+\begin{verbatim} 
+class Polinomio {
+
+    vector<int> coeficientes;
+    bool nulo;
+
+  public:
+    Polinomio();   // criar o polinómio nulo
+    Polinomio(vector<int>);  // criar um polinómio a partir dum vector
+      
+    void Print();		 	// imprimir o polinómio
+    unsigned int Grau(); 		// o grau do polinómio
+    Polinomio escalar(int);	 	// multiplicação escalar a um polinómio
+    Polinomio operator + (Polinomio);	// soma de polinómios
+    Polinomio operator - (Polinomio);	// diferença de polinómios
+    Polinomio operator * (Polinomio);	// multiplicação de polinómio usando Karatsuba
+}
+\end{verbatim}
+
+\item Define uma classe {\it Mod7} em C++ para trabalhar com o corpo finito de $7$ elementos $\ZZ_7$.
+\begin{verbatim} 
+class Mod7 {
+
+    int numero;
+
+  public:
+    Mod7();   // criar o número 0
+    Mod7(int);  // criar módulo a partir dum inteiro
+      
+    void Print();		 	// imprimir o módulo        
+    Mod7 operator + (Mod7);	// soma de módulos
+    Mod7 operator - (Mod7);	// diferença de módulos
+    Mod7 operator * (Mod7);	// multiplicação de módulos
+    Mod7 operator / (Mod7);	// divisão de módulo por um módulo não nulo
+}
+\end{verbatim}
+
+
+\item Adapte a classe {\it Polinomio} no ponto $1$ para criar uma classe {\it $Polinomio\_Mod7$} de polinómios em $\ZZ_7[x]$. 
+Inclua as seguintes funções na classe para calcular o quociente e o resto de polinómios $\ZZ_7[x]$.
+\begin{verbatim} 
+    Polinomio_Mod7 Polinomio_Mod7::operator / (Polinomio_Mod7);		// o quociente da divisão
+    Polinomio_Mod7 Polinomio_Mod7::operator % (Polinomio_Mod7);		// o resto da divisão 
+\end{verbatim}
+Escreva uma função para calcular o máximo divisor comum entre dois polinómios em $\ZZ_7[x]$:
+\begin{verbatim} 
+    Polinomio_Mod7 mdc(Polinomio_Mod7, Polinomio_Mod7);
+\end{verbatim}
+\end{enumerate}
+
+
+
+
+\end{document}
