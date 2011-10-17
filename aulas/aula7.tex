@@ -1,0 +1,341 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+
+\usepackage[center]{caption}
+
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\mdc}[2]{\mathrm{mdc}({#1}, {#2})}
+\newcommand{\mmc}[2]{\mathrm{mmc}({#1}, {#2})}
+\newcommand{\quo}[2]{{#1}\, \mathrm{quo} \, {#2}}
+\newcommand{\rem}[2]{{#1}\, \mathrm{rem} \, {#2}}
+
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{12 de Outubro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%3. 
+%3.1 O template de vectores
+%3.2 O template de matrizes
+%3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+%3.4 Resolução de sistemas lineares
+
+
+
+
+
+\begin{frame}{\bf 3. Álgebra linear }
+Neste capítulo falamos de aspectos computacionais de álgebra linear: matrizes, vectores, sistemas de equações lineares
+\end{frame}
+
+\begin{frame}[fragile]{\bf 3.1 Vectores}
+Para trabalhar com vectores definimos uma classe VETOR.
+
+\lstset{language=C++}
+\begin{lstlisting}
+class VETOR
+{
+   vector<Tipo> data;
+ public:
+   VETOR(vector<Tipo> d) { data=d; };    // construtor
+  ...
+}
+\end{lstlisting}
+
+Aqui {\it Tipo} podia ser substiuido por um típo como {\it int}, {\it float} ou classes que definímos como {\it inteiro}, {\it racional}, {\it polinomio}, {\it modular}.
+
+\end{frame}
+
+\begin{frame}[fragile]{\bf 3.1 Vectores}{\bf Soma}
+Se {\it Tipo} tem uma operação $+$ definida podemos definir a soma de vectores:
+para $v=(v_1,\ldots, v_n)$ e $w=(w_1,\ldots, w_n)$ define-se a soma por
+$$ v + w = (v_1+w_1, v_2+w_2, \ldots, v_n+w_n).$$
+\lstset{language=C++}
+\begin{lstlisting}
+   VETOR VETOR::operator + (VETOR b)
+   {
+     vector soma<Tipo>;                 
+     for (int i=0; i<data.size(); i++)  
+       soma.push_back(data[i]+b.data[i]);
+     return VETOR(soma);
+   };
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\bf 3.1 Vectores}{\bf Multiplicação escalar}
+Se {\it Tipo} tem uma operação $*$ definida podemos definir a multiplicação escalar:
+Para $v=(v_1,\ldots, v_n)$ e um escalar $\lambda$ define-se 
+$$ \lambda v = (\lambda v_1, \lambda +v_2,  \ldots, \lambda v_n).$$
+\lstset{language=C++}
+\begin{lstlisting}
+   VETOR VETOR::escalar(Tipo lambda) 
+   {
+     vector resultado<Tipo>;            
+     for (int i=0; i<data.size(); i++)
+       resultado.push_back(lambda*data[i]);
+     return VETOR(resultado);
+   };
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\bf 3.1 Vectores}{\bf Diferença}
+Se {\it Tipo} contém o elemento $-1$ podemos definir a diferença de vectores por $v-w := v + (-1)w$.
+
+\lstset{language=C++}
+\begin{lstlisting}
+   VETOR VETOR::operator - (VETOR b)
+   {
+     return (*this)+b.escalar(-1);
+   };
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\bf 3.1 Vectores}{\bf Produto interno}
+Para dois vectores $v=(v_1,\ldots, v_n)$ e $w=(w_1,\ldots, w_n)$ define-se o produto interno por
+$$ v * w = v_1w_1 + v_2w_2 + \ldots v_nw_n.$$
+\lstset{language=C++}
+\begin{lstlisting}
+   Tipo VETOR::operator * (VETOR b)
+   {
+     Tipo produto=0;              
+     for (int i=0; i<data.size(); i++)
+       produto = produto + (data[i]*b.data[i]);
+     return produto;
+   };
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3.1 Vectores}{\bf Quadrado da norma}
+O quadrado da norma de um vector $v$ é $|v|^2 = v*v$. 
+\lstset{language=C++}
+\begin{lstlisting}
+   Tipo VETOR::Norma()
+   {
+     return (*this)*(*this);
+   };
+\end{lstlisting}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%
+ 
+\begin{frame}[fragile]{\bf 3.2 Matrizes}
+Para trabalhar com matrizes definimos uma classe MATRIZ que consiste de um vector$<$VETOR$>$ onde fixamos agora o tipo {\it Tipo } nos componentes em VETOR.
+
+\lstset{language=C++}
+\begin{lstlisting}
+class MATRIZ
+{
+   vector<VETOR> data;
+ public:
+   MATRIZ(vector<VETOR> A) { data=A; };    
+  ...
+}
+\end{lstlisting}
+Consideramos os componentes do vector {\it data} por linhas da matriz.
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3.2 Matrizes}{\bf Soma}
+A soma de duas matrizes $A=(a_{ij})$ e $B=(b_{ij})$ é 
+$$ A + B = ( a_{ij}+b_{ij} ).$$
+\lstset{language=C++}
+\begin{lstlisting}
+   MATRIZ MATRIZ::operator + (MATRIZ b)
+   {
+     vector<VETOR> soma;                 
+
+     for (int i=0; i<data.size(); i++) 
+      
+       soma.push_back(data[i]+b.data[i]);
+     
+     return MATRIZ(soma);
+   };
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\bf 3.2 Matrizes}{\bf Multiplicação escalar}
+Para $A=(a_{ij})$ e $\lambda$ define-se 
+$$ \lambda A = (\lambda a_{ij}).$$
+\lstset{language=C++}
+\begin{lstlisting}
+   MATRIZ MATRIZ::escalar(Tipo lambda) 
+   {
+     vector<VETOR> resultado;            
+
+     for (int i=0; i<data.size(); i++)
+
+       resultado.push_back(data[i].escalar(lambda));
+
+     return MATRIZ(resultado);
+   };
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\bf 3.2 Matrizes}{\bf Diferença}
+
+\lstset{language=C++}
+\begin{lstlisting}
+   MATRIZ MATRIZ::operator - (MATRIZ b)
+   {
+     return (*this)+b.escalar(-1);
+   };
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3.2 Matrizes}{\bf Colunas}
+A $j$-esima coluna da matriz $A=(a_{ij})$ é o vetor $(a_{1j}, a_{2j}, \ldots, a_{nj})$.
+
+\lstset{language=C++}
+\begin{lstlisting}
+   VETOR MATRIZ::Coluna(int j)
+   {
+     vector<Tipo> col;
+     for (int i=0; i<data.size(); i++)
+       col.push_back(data[i][j]);
+     return VETOR(col);
+   };
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3.2 Matrizes}{\bf Multiplicação}
+Para $A=(a_{ij})$ e $B=(b_{ij})$ define-se
+$$ A*B = ( \sum_{k=0}^n a_{ik}b_{kj}).$$
+\lstset{language=C++}
+\begin{lstlisting}
+   MATRIZ MATRIZ::operator * (MATRIZ b)
+   {
+     MATRIZ produto(data);
+     int n=data.size();
+     for(int i=0; i<n; i++)
+       for(int j=0; j<n; j++)
+         produto.data[i][j]=data[i]*b.Coluna(j);
+     return produto;
+   };
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{\bf 3.2 Vectores}{\bf Determinante}
+\begin{block}{Determinante}
+Seja $A=(a_{ij})$ uma matriz $n \times n$. O determinante de $A$ é
+$$ |A| = \sum_{\sigma \in S_n} (-1)^{\mathrm{sgn}(\sigma)} a_{1\sigma(1)}a_{2\sigma(2)}\cdots a_{n\sigma(n)}$$
+\end{block}
+
+$$ n!(n-1) \:\:\: \mbox{ multiplicações }$$
+\end{frame}
+
+\begin{frame}{\bf 3.2 Vectores}{\bf Determinante}
+
+\begin{block}{Teorema de Laplace}
+Para qualquer $1\leq i \leq n$ temos que $|A| = \sum_{j=1}^n a_{ij} |\widehat{A}_{ij}|.$
+Onde  
+$$\widehat{A}_{ij} = \left(\begin{array}{ccccc} 
+{a_{11}} & \ldots &{\color{red} a_{1j}} & \ldots & {a_{1n}}\\
+\vdots  & \ddots & \vdots  & \ddots & \vdots \\
+{\color{red} a_{i1}} & \ldots &{\color{red} a_{ij}} & \ldots & {\color{red} a_{in}}\\  
+\vdots  & \ddots & \vdots  & \ddots & \vdots \\
+{a_{n1}} & \ldots &{\color{red} a_{nj}} & \ldots & { a_{nn}}\\
+\end{array}\right)$$
+\end{block}
+
+$$ n!\:\:\: \mbox{ multiplicações }$$
+
+\end{frame}
+
+
+\begin{frame}{\bf 3.2 Vectores}{\bf Determinante}
+
+\begin{block}{Eliminação de Gauss}
+$$A = \left(\begin{array}{ccccc} 
+{\color{red} a_{11}} & a_{12} & \ldots & {a_{1n}}\\
+\vdots  & \ddots & \vdots  & \ddots & \vdots \\
+{a_{i1}} & \ldots &{a_{ij}} & \ldots & {a_{in}}\\  
+\vdots  & \ddots & \vdots  & \ddots & \vdots \\
+{a_{n1}} & \ldots &{a_{nj}} & \ldots & { a_{nn}}\\
+\end{array}\right)
+\rightarrow 
+A' = \left(
+\begin{array}{ccccc} 
+{\color{red} a_{11}} & a_{12} & \ldots & {a_{1n}}\\
+\vdots  & \ddots & \vdots  & \ddots & \vdots \\
+0 & \ldots &{a'_{ij}} & \ldots & {a'_{in}}\\  
+0  & \ddots & \vdots  & \ddots & \vdots \\
+0 & \ldots &{a'_{nj}} & \ldots & { a'_{nn}}\\
+\end{array}\right)
+$$
+
+$$ \sum_{k=2}^n (k-1)k = \frac{n^3-n}{3}\:\:\: \mbox{ multiplicações }$$
+\end{block}
+
+\end{frame}
+
+
+
+\end{document}
+
+
+
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+

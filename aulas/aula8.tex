@@ -1,0 +1,322 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+
+\usepackage[center]{caption}
+
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\mdc}[2]{\mathrm{mdc}({#1}, {#2})}
+\newcommand{\mmc}[2]{\mathrm{mmc}({#1}, {#2})}
+\newcommand{\quo}[2]{{#1}\, \mathrm{quo} \, {#2}}
+\newcommand{\rem}[2]{{#1}\, \mathrm{rem} \, {#2}}
+
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{17 de Outubro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%3. 
+%3.1 O template de vectores
+%3.2 O template de matrizes
+%3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+%3.4 Resolução de sistemas lineares
+
+
+
+
+
+\begin{frame}{\bf 3  Álgebra linear }{\bf Determinante}
+
+
+Para calcular a determinante o mais rápido é usar o algoritmo de eliminação de Gauss para transformar uma matriz numa matriz em escada.
+
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=1]{Carl_Friedrich_Gauss.jpg}
+  \end{center}
+
+  \caption*{Johann Carl Friedrich Gauss (1777-1855)}
+  \label{demTP}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{\bf 3  Álgebra linear }
+\begin{block}{Operações de linhas}
+Seja $A=(a_{ij})_{1\leq i,j\leq n}$ cujas linhas denotamos por $L_1, \ldots, L_n$.\pause 
+
+Dado um escalar $\lambda \in K$ e  $1\leq i \neq j \leq n$ a operação de linha
+$$L_i \leftarrow L_i - \lambda L_j$$ substitue a $i$-esmia linha $L_i = (a_{i1}, \ldots, a_{in})$ de $A$ pela linha  $$L_i-\lambda L_j = (a_{i1}-\lambda a_{j1}, \ldots, a_{in}-\lambda a_{jn}).$$\pause
+\end{block}
+\end{frame}
+\begin{frame}{\bf 3  Álgebra linear }
+\begin{block}{Operações de linhas}
+
+Se $E_{ij} = ( \delta_{ij} )_{1\leq i,j \leq n}$ é a matriz que tem entrada $1$ na componente $(i,j)$ e $0$ nos restantes componentes, então a multiplicação $E_{ij}A$ consiste de matriz cuja $i$-ésima linha é a $j$-ésima linha de $A$ e cujas outras linhas são nulos.\pause
+
+O resultado da operação da linha $L_i \leftarrow L_i - \lambda L_j$ na matriz $A$ é 
+$$ (Id_n - \lambda E_{ij})A.$$
+\end{block}
+\end{frame}
+\begin{frame}{\bf 3  Álgebra linear }
+\begin{block}{Eliminação de Gauss}
+
+Se $E_{ij} = ( \delta_{ij} )_{1\leq i,j \leq n}$ é a matriz que tem entrada $1$ na componente $(i,j)$ e $0$ nos restantes componentes, então a multiplicação $E_{ij}A$ consiste de matriz cuja $i$-ésima linha é a $j$-ésima linha de $A$ e cujas outras linhas são nulos.\pause
+
+O resultado da operação da linha $L_i \leftarrow L_i - \lambda L_j$ na matriz $A$ é 
+$$ (Id_n - \lambda E_{ij})A.$$
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3  Álgebra linear }
+\begin{algorithmic}
+\REQUIRE matriz $A$
+\ENSURE matriz em escada $A'$
+    \FOR{$1\leq j < n$}
+      \IF {$\exists k: a_{kj}\neq 0$}
+      	\STATE {trocar $L_k$ e $L_j$}
+		\FOR{$j<k\leq n$}
+			\STATE $L_k \rightarrow a_{kj}L_k-a_{jj}L_k$
+		\ENDFOR
+	  \ENDIF
+	 \ENDFOR
+\end{algorithmic}
+
+$$\sum_{j=1}^{n-1} (n-j) = \frac{n(n-1)}{2} \:\:\mbox{ iterações.}$$
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3  Álgebra linear }
+\lstset{language=C++}
+\begin{lstlisting}
+   MATRIZ MATRIZ::OpLinha(int i, int j, Tipo lambda, Tipo mu)
+   {
+     vector<VETOR> output(data);                 
+     for (int k=0; k<data.size(); k++) 
+      
+       output[i][k] = mu*output[i][k] - lambda*output[j][k];
+     
+     return MATRIZ(output);
+   };
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3  Álgebra linear }
+\lstset{language=C++}
+\begin{lstlisting}
+   MATRIZ MATRIZ::Trocar(int i, int j)
+   {
+     vector<VETOR> output(data);                 
+     for (int k=0; k<data.size(); k++) 
+     {      
+       Tipo aux=output[i][k];
+       output[i][k]=output[j][k];
+       output[j][k]=aux;
+     }
+     return MATRIZ(output);
+   };
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3  Álgebra linear }
+\lstset{language=C++,basicstyle=\tiny}
+\begin{lstlisting}
+   MATRIZ MATRIZ::TransformarEscadas()
+   {
+     int n=data.size();
+     MATRIZ output(data);
+     for (int j=0; j<n; j++) 
+     {      
+       int k=j;
+       while(k<n && output.data[k][j] == 0) k++;
+       if (k<n) 
+       {	
+          output=output.trocar(j,k);
+          for (k=j+1; k<n; k++)
+            output=output.OpLinha(k,j,output.data[k][j],output.data[j][j]);
+       }
+     };
+     return output;
+   };
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{\bf 3  Álgebra linear }
+\lstset{language=C++}
+\begin{lstlisting}
+   Tipo MATRIZ::Determinante()
+   {
+     MATRIZ escadas=TransformarEscadas();
+     Tipo det=escadas.data[0][0];
+     for(int i=1: i<escadas.data.size(); i++)
+     	det=det*escadas.data[i][i];
+     return det;
+   };
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{\bf 3.3 Algoritmo de Strassen}
+Multiplicação rápida de matrizes.
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{Volker_Strassen.png}
+  \end{center}
+
+  \caption*{Volker Strassen (1936-)}
+  \label{demTP}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{\bf 3.3 Algoritmo de Strassen}
+$$ M=\left(\begin{array}{cc} A & B \\ C & D \end{array}\right) \in M_{2^n}(K)\qquad 
+N=\left(\begin{array}{cc} E & F \\ G & H \end{array}\right)\in M_{2^n}(K) $$
+$A,B,C,D,E,F,G,H \in M_{2^{n-1}}(K)$. Então 
+$$ MN=\left(\begin{array}{cc} R & S \\ T & U \end{array}\right) \qquad 
+\mbox{ tal que } \qquad \left\{ \begin{array}{rcl} R & = & AE + BG \\
+S & = & AF + BH \\
+T & = & CE + DG \\
+U & = & CF + DH  \end{array}\right.$$
+
+$$ 8 \mbox{ Multiplicações } \qquad 4 \mbox{ Adições}$$
+\end{frame}
+
+
+\begin{frame}{\bf 3.3 Algoritmo de Strassen}
+
+$$\left\{\begin{array}{rcl}
+    M_{1} &=& (A + D)\cdot (D + H)\\
+    M_{2} &=& (C + D)\cdot E\\
+    M_{3} &=& A \cdot(F - H)\\
+    M_{4} &=& D \cdot(G - E)\\
+    M_{5} &=& (A + B)\cdot H\\
+    M_{6} &=& (C - A) \cdot(E + F)\\
+    M_{7} &=& (B - D) \cdot(G + H) 
+    \end{array}\right. \qquad 
+    \left\{ \begin{array}{rcl} 
+    R & = & M_1 + M_4 - M_5 + M_7 \\
+S & = & M_3 + M_5 \\
+T & = & M_2+M_4 \\
+U & = & M_1-M_2+M_3+M_6  \end{array}\right.$$
+
+$$ 7 \mbox{ Multiplicações } \qquad 18 \mbox{ Adições}$$
+\end{frame}
+
+\begin{frame}{\bf 3.3 Algoritmo de Strassen}
+\begin{block}{Caso 1 do ``Master Theorem''}
+Dado uma função recursiva que divide os dados da entrada com tamanho $n$ em $b$ subconjuntos e que aplica recursivamente essa função $a$ vezes nestes subconjuntos e que tem custos adicionais dado por uma função $f(n)$ satisfaz a formula de custos:
+$$T(n)=aT(n/b)+f(n)$$
+Se $f(n) \in O(n^{\log_b(a) - \epsilon})$ onde $\epsilon >0$ então $T(n) \in \Theta(n^{\log_b(a)})$. 
+\end{block}
+
+\begin{block}{Notação O}
+$$f(x)\in O(g(x)) \Leftrightarrow \exists C, n_0: \forall n>n_0: f(n)\leq C g(n).$$
+$$f(x)\in \Theta(g(x)) \Leftrightarrow \exists C_1,C_2, n_0: \forall n>n_0: C_1g(n)\leq f(n)\leq C_2g(n).$$
+\end{block}
+\end{frame}
+
+\begin{frame}{\bf 3.3 Algoritmo de Strassen}
+\begin{block}{Multiplicação de matrizes usual}
+Tamanho das matrizes $n\times n$:
+$$T(n) = 8 T(n/2) + 4n^2$$
+Como $f(n) = 4n^2 \in O(n^{\log_2(8) - 1})$ então $T(n) \in \Theta(n^{\log_2(8)})=\Theta(n^3)$. 
+\end{block}
+
+\begin{block}{Multiplicação de matrizes usando o Algoritmo de Strassen}
+Tamanho das matrizes $n\times n$:
+$$T(n) = 7 T(n/2) + 18n^2$$
+Como $f(n) = 18n^2 \in O(n^{\log_2(7)-0.8})$ então $T(n) \in \Theta(n^{2.807})$, onde $\log_2(7) \simeq 2.807$.
+\end{block}
+
+\end{frame}
+
+\begin{frame}{\bf 3.3 Algoritmo de Strassen}
+
+\begin{tabular}{|c|r|r|r|}\hline
+$n=2^k$ & Classico $8^k$& Strassen $7^k$ & percentagem \\\hline
+$2$ & $8$ & $7$ & $\sim 87\%$\\\hline
+$4$ & $64$ & $49$ & $\sim 76\%$ \\\hline
+$8$ & $512$ & $343$ & $\sim 67\%$\\\hline
+$16$ & $4096$ & $2401$ & $\sim 58\%$\\\hline
+$32$ & $32768$ & $16807$ & $\sim 51\%$\\\hline
+$64$ & $262144$ & $117649$ & $\sim 49\%$ \\\hline
+$128$ & $2097152$ & $823543$ & $\sim 39\%$\\\hline
+$256$ & $16777216$ & $5764801$ & $\sim 34\%$\\\hline
+$512$ & $134217728$ & $40353607$ & $\sim 30\%$\\\hline
+$1024$ & $1073741824$ & $282475249$ & $\sim 26\%$\\\hline
+\end{tabular}
+\end{frame}
+
+
+
+\end{document}
+
+
+
+
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+
