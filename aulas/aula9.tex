@@ -1,0 +1,135 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+\usepackage{algorithmic}
+\usepackage{polynom}
+\usepackage[english, portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[utf8x]{inputenc}
+\usepackage{euler}
+
+\usepackage[center]{caption}
+
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\footnotesize}
+
+%\floatname{algorithm}{Função }
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\grau}[1]{\mathrm{grau}({#1})}
+\newcommand{\mdc}[2]{\mathrm{mdc}({#1}, {#2})}
+\newcommand{\mmc}[2]{\mathrm{mmc}({#1}, {#2})}
+\newcommand{\quo}[2]{{#1}\, \mathrm{quo} \, {#2}}
+\newcommand{\rem}[2]{{#1}\, \mathrm{rem} \, {#2}}
+
+\newcommand{\cvector}[1]{\mathrm{vector}(#1)}
+\newcommand{\lc}[1]{\mathrm{lc}(#1)}
+%\usetheme{Berlin}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          %titlepagelogo=logotipo_pdf1,% Logo for the first page.
+          %watermark=logotipo_pdf1,% Watermark used in every page.
+          %watermarkheight=100px,% Height of the watermark.
+          %watermarkheightmult=2,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\title[M342]{M342 Álgebra Computacional}
+\author{Christian Lomp}
+\institute{FCUP}
+\date{24 de Outubro de 2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%3. 
+%3.1 O template de vectores
+%3.2 O template de matrizes
+%3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+%3.4 Resolução de sistemas lineares
+
+
+
+
+
+\begin{frame}{\bf 3.4 Resolução de sistemas lineares}
+
+
+$$\left\{ \begin{array}{cccccccc}
+a_{11}x_1 &+& a_{12}x_2 & \ldots &+& a_{1n}x_n &=& b_1 \\
+a_{21}x_1 &+& a_{22}x_2 & \ldots &+& a_{2n}x_n &=& b_2 \\
+   \vdots &&           & \ddots &&           & &\vdots \\
+a_{m1}x_1 &+& a_{m2}x_2 & \ldots &+& a_{mn}x_n &=& b_m \\
+\end{array}\right.$$
+\end{frame}
+
+
+\begin{frame}{\bf 3.4 Resolução de sistemas lineares }{Stratégia}
+{\small 
+$$
+\left( \begin{array}{cccc|l}
+a_{11} & a_{12} & \ldots & a_{1n} & b_1 \\
+a_{21} & a_{22} & \ldots & a_{2n} & b_2 \\
+   \vdots &     & \ddots &      &\vdots \\
+a_{m1} & a_{m2} & \ldots & a_{mn} & b_m \\
+\end{array}\right)\rightarrow
+\left( \begin{array}{cccccc|l}
+a'_{11}   & a'_{12} & \ldots  & \ldots  & \ldots  & a'_{1n}  & b'_1 \\
+0         & a'_{22} & \ldots  &   &   & a'_{2n}  & b'_2 \\
+   \vdots & \ddots  & \ddots  &   &   &  \vdots        & \vdots \\
+ 0        & \ldots  &  0      & a'_{kk} & \ldots  & a'_{kn}  & b'_k \\
+\vdots   &         & \vdots  & 0       & \ldots  & 0        & b'_{k+1} \\
+         &         &         &  \vdots       &   &   \vdots & \vdots \\
+0         & \ldots  & 0      &  0       &  \ldots       & 0         & b'_m \\
+\end{array}\right)
+$$}
+
+\end{frame}
+
+\begin{frame}{\bf 3.4}{}
+$$\left\{ \begin{array}{lcl} \mbox{ impossível } & \mbox{ se } & (b_{k+1}, \ldots, b_m) \neq (0,\ldots, 0)\\ 
+ \mbox{ possível determinado } & \mbox{ se } & (b_{k+1}, \ldots, b_m) = (0,\ldots, 0) \\
+&& \left(\begin{array}{ccc} a'_{1{k+1}} & \ldots & a'_{1n} \\ \vdots & &\vdots \\ a'_{k{k+1}} & \ldots & a'_{kn} \end{array}\right)
+= \left(\begin{array}{ccc} 0 & \ldots & 0 \\ \vdots & &\vdots \\ 0 & \ldots & 0 \end{array}\right)\\
+ \mbox{ possível indeterminado } & \mbox{ } & \mbox{ nos restantes casos}
+\end{array}\right.$$
+\end{frame}
+
+
+\end{document}
+
+
+
+
+
+3. 
+3.1 O template de vectores
+3.2 O template de matrizes
+3.3 Multiplicação rápida de matrizes: Algoritmo de Strassen.
+3.4 Resolução de sistemas lineares
+
+4. 
+4.1 Introdução à geometria algébrica
+4.2 Ordem nos monómios
+4.3 Algoritmo da divisão para polinómios em múltiplos indeterminadas
+4.4 Lemma de Dickson
+4.5 Bases de Gröbner e Teorema de Hilbert
+4.6 Algoritmo de Buchberger
+4.7 Teoria de Eliminação
+4.8 Teorema "Nullstellensatz" de Hilbert
+4.9 Algoritmo de filiação de radicais
+4.10 Aplicação à robótica
+\end{frame}
+
