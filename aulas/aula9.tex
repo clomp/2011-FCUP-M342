@@ -356,10 +356,10 @@ S&=& \left \{(1,0,0,1) + \lambda (2,0,1,-5) + \mu (-2,1,0,0) \mid \lambda,\mu \i
   \IF {$(b_{n-k+1}, \ldots, b_n)\neq (0,\ldots,0)$}
   	\RETURN $\emptyset$
   \ELSE
-    \FOR{$k\geq i \geq 1$}
+    \FOR{$n-k\geq i \geq 1$}
 				\STATE eliminação das entradas por cima de $a_{ii}$ por operações de linhas em $(A|b)$.
    \ENDFOR
-     \IF {$n=k$}
+     \IF {$k=0$}
   	\RETURN $b$
     \ELSE 
     	  \STATE define $x^j$ for all $n-k<j\leq n$ por $x^j_{\pi(i)}=-a_{ij}$ se $i\leq n-k$ e $x^j_{\pi(i)} = \delta_{ij}$ se $i>n-k$.
