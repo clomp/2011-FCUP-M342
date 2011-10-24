@@ -95,18 +95,279 @@ a'_{11}   & a'_{12} & \ldots  & \ldots  & \ldots  & a'_{1n}  & b'_1 \\
 0         & \ldots  & 0      &  0       &  \ldots       & 0         & b'_m \\
 \end{array}\right)
 $$}
-
 \end{frame}
+
+\begin{frame}
+Para obter uma matriz desta forma é as vezes necessário trocar colunas ou seja é necessário permutar os variáveis.
+
+\medskip
+\pause
+Seja $\pi \in S_n$ a permutação tal que a $i$-esima coluna corresponde a variável $x_{\pi(i)}$.
+\end{frame}
+
 
 \begin{frame}{\bf 3.4}{}
-$$\left\{ \begin{array}{lcl} \mbox{ impossível } & \mbox{ se } & (b_{k+1}, \ldots, b_m) \neq (0,\ldots, 0)\\ 
- \mbox{ possível determinado } & \mbox{ se } & (b_{k+1}, \ldots, b_m) = (0,\ldots, 0) \\
-&& \left(\begin{array}{ccc} a'_{1{k+1}} & \ldots & a'_{1n} \\ \vdots & &\vdots \\ a'_{k{k+1}} & \ldots & a'_{kn} \end{array}\right)
-= \left(\begin{array}{ccc} 0 & \ldots & 0 \\ \vdots & &\vdots \\ 0 & \ldots & 0 \end{array}\right)\\
- \mbox{ possível indeterminado } & \mbox{ } & \mbox{ nos restantes casos}
-\end{array}\right.$$
+\begin{block}{Sistemas impossíveis}
+Se $(b_{k+1}, \ldots, b_m) \neq (0,\ldots, 0)$ então o sistema é impossível.
+\end{block}
+\pause
+
+Segunda Redução pelo operações de linhas:
+
+{\tiny 
+$$
+\left( \begin{array}{cccccc|l}
+a'_{11}   & a'_{12} & \ldots  & \ldots  & \ldots  & a'_{1n}  & b'_1 \\
+0         & a'_{22} &  &   &   & a'_{2n}  & b'_2 \\
+   \vdots & \ddots  & \ddots  &   &   &  \vdots        & \vdots \\
+ \vdots       &  &  0      & a'_{kk} & \ldots  & a'_{kn}  & b'_k \\
+\vdots   &         & \vdots  & 0       & \ldots  & 0        & b'_{k+1} \\
+         &         &         &  \vdots       &   &   \vdots & \vdots \\
+0         & \ldots  & 0      &  0       &  \ldots       & 0         & b'_m \\
+\end{array}\right)
+\rightarrow
+\left( \begin{array}{ccccccc|l}
+1   & 0       & \ldots  & 0       & a''_{1 {k+1}}& \ldots  & a''_{1n}  & b''_1 \\
+0         & 1 &      \ddots  & \vdots       & a''_{2 {k+1}}& \ldots  & a''_{2n}  & b''_2 \\
+   \vdots & \ddots  & \ddots  &  0           & \vdots        &         &  \vdots   & \vdots \\
+ 0        & \ldots  &  0      & 1      & a''_{k {k+1}}   & \ldots  & a''_{kn}  & b''_k \\
+\vdots   &         & \vdots   & 0            & \ldots            &\ldots   & 0        & 0 \\
+         &         &         &  \vdots       &               &         & \vdots & \vdots \\
+0         & \ldots  & 0      &  0            & \ldots             &  \ldots  & 0         & 0 \\
+\end{array}\right)
+$$}
+
+
 \end{frame}
 
+\begin{frame}{\bf 3.4}{Possível determinado}
+
+\begin{block}{Sistemas possíveis determinados}
+Se o sistema for possível e se $k=n$ então o sistema é {\bf possível determinado} com a única solução:
+$$x_{\pi(i)} = b''_i \qquad \mbox{ para todo } 1\leq i \leq n.$$ 
+\end{block}
+
+
+\end{frame}
+
+\begin{frame}{\bf 3.4}{Possível indeterminado}
+
+\begin{block}{Sistemas possíveis indeterminados}
+Se o sistema nem for impossível nem possível determinado então é {\bf possível indeterminado}. As soluções são da forma: 
+$$ \mbox{ solução particular } + \mbox{ solução do sistema homogéneo}.$$
+\pause A solução particlar é 
+
+$$x_{\pi(i)} = b''_i \qquad \mbox{ para todo } 1\leq i \leq k \qquad x_{\pi(i)}=0 \qquad \mbox{ se } i>k.$$ 
+\end{block}
+\end{frame}
+
+\begin{frame}{\bf 3.4}{Base do sistema homogéneo}
+\begin{block}{}
+Uma base do sistema homogéneo é dado pelos $n-k$ vectores $x^j$, $j=k+1, \ldots, n$:
+
+$$x^j_{\pi(i)}=\left\{\begin{array}{cll} 
+-a''_{ij} &\mbox{ se }& 1\leq i \leq k \\
+1 & \mbox{ se } & i=j \\ 
+0 & &\mbox{ nos restantes casos}\end{array}\right.$$
+\end{block}
+\end{frame}
+
+\begin{frame}{Exemplo}
+O sistema 
+$$\left\{ \begin{array}{rcrcrcrcr}
+x_1 & + & 2x_2  &+& 3x_3 &+& 4x_4 &=& 5 \\
+2x_1 & + & 4x_2  &+& x_3 &+& 2x_4 &=& 4 \\
+3x_1 & + & 6x_2  &+& 4x_3 &+& 6x_4 &=& 9 
+\end{array}\right.$$
+corresponde à matriz:
+
+$$\left( \begin{array}{rrrr|r}
+1 & 2& 3& 4& 5 \\
+2&  4& 1& 2& 4 \\
+3& 6& 4& 6& 9 
+\end{array}\right)$$
+
+\end{frame}
+
+
+\begin{frame}{Exemplo}
+O primeiro passo elemina as entradas da primeira coluna das linhas $L_2$ e $L_3$:
+
+$$ L_2 \leftarrow L_2 - 2L_1 \qquad L_3 \leftarrow L_3 - 3L_1$$
+
+$$\left( \begin{array}{rrrr|r}
+1 & 2& 3& 4& 5 \\
+2&  4& 1& 2& 4 \\
+3& 6& 4& 6& 9 
+\end{array}\right)
+\rightarrow 
+\left( \begin{array}{rrrr|r}
+1 & 2& 3& 4& 5 \\
+0&  0& -5& -6& -6 \\
+0& 0& -5& -6& -6 
+\end{array}\right)$$
+É necessário trocar duas colunas, digamos coluna $C_2$ e coluna $C_4$.
+\end{frame}
+
+
+\begin{frame}{Exemplo}
+$$\left( \begin{array}{rrrr|r}
+1 & 2& 3& 4& 5 \\
+0&  0& -5& -6& -6 \\
+0& 0& -5& -6& -6 
+\end{array}\right)
+\leftrightarrow 
+\left\{ \begin{array}{rrrrcr}
+x_1 & +2x_2  &+3x_3 &+4x_4 &=&5 \\
+    &        &-5x_3 &-6x_4 &=&-6 \\
+    &        &-5x_3 &-6x_4 &=&-6 
+\end{array}\right.$$
+Trocar coluna $C_2$ e $C_4$.
+$$\left( \begin{array}{rrrr|r}
+1 & 4& 3& 2& 5 \\
+0&  -6& -5& 0& -6 \\
+0& -6& -5& 0& -6 
+\end{array}\right)
+\leftrightarrow 
+\left\{ \begin{array}{rrrrcr}
+x_1 &   +4x_4 &+3x_3 &+2x_2 &=&5 \\
+    &   -6x_4      &-5x_3 & &=&-6 \\
+    &    -6x_4     &-5x_3 &&=&-6 
+\end{array}\right.$$
+Logo a permutação é $\pi=(24)$.
+\end{frame}
+
+
+\begin{frame}{Exemplo}
+A operação de linha $L_3 \leftarrow L_3+L_2$:
+$$\left( \begin{array}{rrrr|r}
+1 & 4& 3& 2& 5 \\
+0&  -6& -5& 0& -6 \\
+0& -6& -5& 0& -6 
+\end{array}\right)
+\rightarrow 
+\left( \begin{array}{rrrr|r}
+1 & 4& 3& 2& 5 \\
+0&  -6& -5& 0& -6 \\
+0& 0& 0& 0& 0 
+\end{array}\right)$$
+Logo o sistema é possível indeterminada.
+\end{frame}
+
+\begin{frame}{Exemplo}
+Segunda redução: operação de linha $L_1 \leftarrow 6L_1+4L_2$:
+$$\left( \begin{array}{rrrr|r}
+1 & 4& 3& 2& 5 \\
+0&  -6& -5& 0& -6 \\
+0& 0& 0& 0& 0 
+\end{array}\right)
+\rightarrow 
+\left( \begin{array}{rrrr|r}
+6 & 0&  -2& 12& 6 \\
+0&  -6& -5& 0& -6 \\
+0& 0& 0& 0& 0 
+\end{array}\right)$$
+Divisão para normalizar os coeficientes da diagonal: $L_1 \leftarrow \frac{1}{6}L_1$ e $L_2 \leftarrow \frac{-1}{6}L_2$:
+$$\left( \begin{array}{rrrr|r}
+6 & 0&  -2& 12& 6 \\
+0&  -6& -5& 0& -6 \\
+0& 0& 0& 0& 0 
+\end{array}\right)
+\rightarrow 
+\left( \begin{array}{rrrr|r}
+1 & 0&  -\frac{1}{3}& 2& 1 \\
+0&  1& \frac{5}{6}& 0& 1 \\
+0& 0& 0& 0& 0 
+\end{array}\right)$$
+\end{frame}
+
+\begin{frame}{Exemplo}{Solução particular}
+
+Nota-se que 
+$$\left( \begin{array}{rrrr|r}
+1 & 0&  -\frac{1}{3}& 2& 1 \\
+0&  1& \frac{5}{6}& 0& 1 \\
+0& 0& 0& 0& 0 
+\end{array}\right)
+\leftrightarrow 
+\left\{ \begin{array}{rrrrcr}
+x_1 &   &-\frac{1}{3}x_3 &+2x_2 &=&1 \\
+    &   x_4      &+\frac{5}{6}x_3 & &=&1 
+\end{array}\right.
+$$
+As variáveis $x_3$ e $x_2$ são livres e uma solução particular obtemos se $x_3=x_2=0$, i.e. $x=(1,0,0,1)$ ou seja:
+$$x_{\pi(1)}=x_1=1 \qquad x_{\pi(2)}=x_4=1 \qquad x_{\pi(3)}=x_3=0 \qquad x_{\pi(4)}=0$$
+
+\end{frame}
+
+\begin{frame}{Exemplo}{Solução do sistema homogeneo}
+
+A base do sistema homogeneo é dado por $2$ vectores:
+\pause
+
+Caso $j=3$: $u= (\frac{1}{3}, 0, 1, -\frac{5}{6})$, porque
+$$u_{\pi(1)}=u_1=\frac{1}{3} \qquad u_{\pi(2)}=u_4=-\frac{5}{6} \qquad u_{\pi(3)}=u_3=1, u_{\pi(4)}=u_2=0$$
+\pause
+Alternativamente podemos usar $6u=(2,0,6,-5)$.
+
+\medskip\pause
+
+
+Caso $j=4$: $v = (-2, 1, 0, 0)$, porque
+$$v_{\pi(1)}=v_1=-2 \qquad v_{\pi(2)}=v_4=0 \qquad v_{\pi(3)}=v_3=0, v_{\pi(4)}=v_2=1$$
+
+
+\end{frame}
+
+
+\begin{frame}{Exemplo}{Solução geral}
+
+Seja $S$ o conjunto das soluções do sistema.
+
+\begin{eqnarray*}
+S&=& \left \{(1,0,0,1) + \lambda (2,0,1,-5) + \mu (-2,1,0,0) \mid \lambda,\mu \in K\right\}\\
+&=& \left \{  (1+2(\lambda-\mu), \mu, 6\lambda, 1-5\lambda) \mid \lambda,\mu \in K\right\}.
+\end{eqnarray*}
+
+
+
+\end{frame}
+
+\begin{frame}[fragile]{\bf Algoritmo}{1º Passo}
+\begin{algorithmic}
+\REQUIRE matriz $A$: colunas $C_1, \ldots, C_n$; linhas $L_1, \ldots, L_m$ e $b \in K^m$
+\ENSURE conjunto de soluções de $Ax=b$.
+  \STATE $k \leftarrow 0$
+  \STATE $\pi\leftarrow id$
+  \FOR{$1\leq i \leq n$}
+			\IF {coluna $i$ é zero a partir da linha $i$}
+				\STATE trocar $C_i \leftrightarrow C_{n-k}$; $\pi \leftarrow (i, n-k)\pi $
+				\STATE $k\leftarrow k+1$
+			 \ELSE
+			 	\STATE trocar linhas da matriz $(A|b)$ tal que $a_{ii}\neq 0$.
+				\STATE elimnação das entradas por baixo de $a_{ii}$ por operações de linhas em $(A|b)$.
+			\ENDIF
+   \ENDFOR
+\end{algorithmic}
+\end{frame}
+
+\begin{frame}[fragile]{\bf Algoritmo}{2º Passo}
+\begin{algorithmic}
+  \IF {$(b_{n-k+1}, \ldots, b_n)\neq (0,\ldots,0)$}
+  	\RETURN $\emptyset$
+  \ELSE
+    \FOR{$k\geq i \geq 1$}
+				\STATE elimnação das entradas por cima de $a_{ii}$ por operações de linhas em $(A|b)$.
+   \ENDFOR
+     \IF {$n=k$}
+  	\RETURN $b$
+    \ELSE 
+    	  \STATE define $x^j$ for all $n-k<j\leq n$ por $x^j_{\pi(i)}=-a_{ij}$ se $i\leq n-k$ e $x^j_{\pi(i)} = \delta_{ij}$ se $i>n-k$.
+	  \RETURN $(b, x^{n-k+1}, \ldots, x^n)$
+    \ENDIF
+  \ENDIF
+\end{algorithmic}
+\end{frame}
 
 \end{document}
 
