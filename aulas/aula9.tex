@@ -191,7 +191,7 @@ $$\left( \begin{array}{rrrr|r}
 
 
 \begin{frame}{Exemplo}
-O primeiro passo elemina as entradas da primeira coluna das linhas $L_2$ e $L_3$:
+No primeiro passo eliminamos as entradas da primeira coluna das linhas $L_2$ e $L_3$:
 
 $$ L_2 \leftarrow L_2 - 2L_1 \qquad L_3 \leftarrow L_3 - 3L_1$$
 
@@ -345,7 +345,7 @@ S&=& \left \{(1,0,0,1) + \lambda (2,0,1,-5) + \mu (-2,1,0,0) \mid \lambda,\mu \i
 				\STATE $k\leftarrow k+1$
 			 \ELSE
 			 	\STATE trocar linhas da matriz $(A|b)$ tal que $a_{ii}\neq 0$.
-				\STATE elimnação das entradas por baixo de $a_{ii}$ por operações de linhas em $(A|b)$.
+				\STATE eliminação das entradas por baixo de $a_{ii}$ por operações de linhas em $(A|b)$.
 			\ENDIF
    \ENDFOR
 \end{algorithmic}
@@ -357,7 +357,7 @@ S&=& \left \{(1,0,0,1) + \lambda (2,0,1,-5) + \mu (-2,1,0,0) \mid \lambda,\mu \i
   	\RETURN $\emptyset$
   \ELSE
     \FOR{$k\geq i \geq 1$}
-				\STATE elimnação das entradas por cima de $a_{ii}$ por operações de linhas em $(A|b)$.
+				\STATE eliminação das entradas por cima de $a_{ii}$ por operações de linhas em $(A|b)$.
    \ENDFOR
      \IF {$n=k$}
   	\RETURN $b$
