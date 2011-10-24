@@ -82,4 +82,15 @@ int main()
         cin >> resposta;
     }while(resposta=="sim");
 
+    string s;
+    do{
+      cout << "Transformar um texto num vector:";
+      cin >> s;
+      vector<unsigned int> v=ConvertStringToVector(s);
+      cout << "Os coeficientes são:" << endl;
+      for(int i=0;i<v.size(); i++)
+         cout << "v["<<i<<"] = "<< v[i] << endl;
+      cout << "Quer mais ? (sim/nao)";
+      cin >> resposta;
+    }while(resposta=="sim");
 }
