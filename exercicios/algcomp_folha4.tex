@@ -1,0 +1,38 @@
+\include{algcomp_folha_header}
+\usepackage{hyperref}
+\newcommand{\real}[1]{\underline{\mathbf{#1}}} 
+\newcommand{\mod}{\mathrm{mod}\:}
+
+\begin{document}
+\writetitle{31.10.2011}{4}{4}
+
+
+\nextsect
+
+\sectitle{Geometria algébrica}
+
+Seja $n>1$. Denotamos por $\ZZ_n=\{0,1,\ldots, n-1\}$ o anel com $n$ elementos cujas operações são dadas por
+$$ a + b = (a+b)\mod n \qquad ab = (ab)\mod n$$
+para quaisquer $a,b\in \ZZ_n$.
+
+\begin{enumerate}
+ \item Seja $\ZZ_2$ o corpo com dois elementos. 
+   \begin{enumerate}
+    \item Considere o polinómio $g = x^2y + y^2x \in \ZZ_2[x,y]$. Verifique que $\overline{g}(x,y)=0$ para todos as pares $(x,y)\in \ZZ_2^2$.
+    \item Encontre um polinómio  $f \in \ZZ_2[x,y,z]$  com $\overline{f}\equiv 0$ em $\ZZ_2^3$. Tente encontrar um $f$ que envolve todos os três variáveis.  
+    \item Encontre um polinómio $f$ em $\ZZ_2[x_1, \ldots, x_n]$ com $\overline{f}\equiv 0$ em $\ZZ_2^n$. Consegua encontrar um $f$ que envolve todos os $n$ variáveis ?
+  \end{enumerate}
+\item Sejam $K=\QQ$ e  $$ f = x^5y^2z - x^4y^3 + y^5 +x^2z - y^3z + xy + 2x - 5z + 3 \in \QQ[x,y,z].$$
+ \begin{enumerate}
+  \item Escreva $f$ como polinómio em $x$ com coeficientes em $\QQ[y,z]$.
+  \item Escreva $f$ como polinómio em $y$ com coeficientes em $\QQ[x,z]$.
+  \item Escreva $f$ como polinómio em $z$ com coeficientes em $\QQ[x,y]$.
+ \end{enumerate}
+  \item Sejam $p$ um número primo e $\ZZ_p$ o corpo com $p$ elementos. Mostre que a função $\overline{f}:\ZZ_p \rightarrow \ZZ_p$ associada ao polinómio $f=x^p-x \in \ZZ_p[x]$ é constantemente zero.
+\item Seja $f\in \CC[x_1, \ldots, x_n]$. Suponha que $\overline{f}(a_1, \ldots, a_n)=0$ para todo $(a_1,\ldots, a_n)\in \ZZ^n$, mostre que $f=0$.
+\end{enumerate}
+
+
+
+
+\end{document}
