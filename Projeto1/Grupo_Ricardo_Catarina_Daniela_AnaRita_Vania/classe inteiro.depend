@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1316998390 source:c:\users\ricardo\documents\universität\terceiro ano\primeiro semestre\álgebra computacional\exercícios programação\classe inteiro\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<sstream>
+
+1319637460 source:c:\users\ricardo\documents\universität\terceiro ano\primeiro semestre\álgebra computacional\projectos\classe inteiro\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<cstring>
+	<sstream>
+

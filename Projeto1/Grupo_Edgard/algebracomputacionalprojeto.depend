@@ -1,0 +1,37 @@
+# depslib dependency file v1.0
+1318405212 source:/home/edgard/Documents/algebracomputacionalprojeto/main.cpp
+	<cstdlib>
+	<iostream>
+	<vector>
+	<string>
+	<strings.h>
+	<string.h>
+	<sstream>
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
+1318406348 source:/media/EEA5-AEFB/FCUP/Algebra Computacional/Projeto/algebracomputacionalprojeto/main.cpp
+	<cstdlib>
+	<iostream>
+	<vector>
+	<string>
+	<strings.h>
+	<string.h>
+	<sstream>
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
+1319213283 source:/home/edgrd/Downloads/algebracomputacionalprojeto/main.cpp
+	<cstdlib>
+	<iostream>
+	<vector>
+	<string>
+	<strings.h>
+	<string.h>
+	<sstream>
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

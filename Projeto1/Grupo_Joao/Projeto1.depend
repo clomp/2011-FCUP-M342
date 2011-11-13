@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1319606483 source:d:\universidade\fcup\algebra computacional\projeto1\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<sstream>
+	<cstdlib>
+
