@@ -1,0 +1,110 @@
+\include{project_header}
+\usepackage{hyperref}
+\newcommand{\shift}[1]{\setlength{\leftskip}{15 mm}{#1}\medskip}
+
+\newcommand{\poli}{{$< polinomio >$ }}
+
+\begin{document}
+\writetitle{entrega: 5.12.2011}{2}{2}
+
+\nextsect
+
+\sectitle{A classe dos polinómios}
+
+{\bf Objetivo:} Definir uma classe em C++ que permita a aritmética de polinómios $\ZZ_2[x]$ numa indeterminada sobre o corpo $\ZZ_2$.
+
+\nextexer{\bf Especificação da classe:} A classe \poli deve representar polinomios com coeficientes $\{0,1\}$
+utilizando a classe $< vector >$.
+
+A classe \poli deve ter a seguinte estrutura:
+
+\begin{lstlisting}[language=C++]
+class polinomio {
+
+  bool nulo; 
+  vector <bool> coeficientes;
+
+  public:
+    polinomio();
+    polinomio(bool, vector<unsigned int>);
+    bool PolinomioNulo();
+    polinomio operator + (polinomio);
+    polinomio operator - (polinomio);
+    polinomio operator * (polinomio);
+    polinomio operator / (polinomio);
+    polinomio operator % (polinomio);	
+    int Grau();	
+    void Print();
+}
+\end{lstlisting}
+
+\nextexer{\bf Especificações das funções:}
+
+\begin{enumerate}
+\item $nulo$ é $true$ se e só se o objeto da classe \poli representa o polinómio nulo.
+\item $coeficientes$ é a lista dos coeficientes do polinómio $f=\sum_{i=0}^n a_i x^i \in \ZZ_2[x]$ que o objeto representa. O coeficiente $coeficientes[i]$ é $false$ se e só se $a_i=0$. (Nota que a linguagem $C$ representá o valor booleano $false$ por $0$ e $true$ por um inteiro não nulo.)
+\item \setlength{\leftskip}{4mm} {\bf O construtor:}
+\begin{lstlisting}[language=C++]
+polinomio::polinomio() { ... }
+\end{lstlisting}
+\shift{Criação dum objecto da classe \poli que representa um elemento de $\ZZ_2[x]$.}
+\begin{lstlisting}[language=C++]
+polinomio::polinomio(bool nulo, vector<unsigned int> coef) { ... }
+\end{lstlisting}
+\shift{ Criação dum objecto da classe \poli  que representa o $f=\sum_{i=0}^n a_i x^i$ com $a_i=coef[i]$ ou $f=0$ se $nulo=true$.}
+
+\item \setlength{\leftskip}{4mm} {\bf Aritmética:}
+\begin{lstlisting}[language=C++]
+polinomio polinomio::operator + (polinomio b) { ... }
+\end{lstlisting}
+\shift{O valor de retorno é um objeto da classe \poli  que representa a soma dos polinomios representados pelo objeto atual e pelo objeto $b$.}
+\begin{lstlisting}[language=C++]
+polinomio polinomio::operator - (polinomio b) { ... }
+\end{lstlisting}
+\shift{O valor de retorno é um objeto da classe \poli  que representa a diferenca dos polinomio representados pelo objeto atual e pelo objeto $b$.}
+\begin{lstlisting}[language=C++]
+polinomio polinomio::operator * (polinomio b) { ... }
+\end{lstlisting}
+\shift{O valor de retorno é um objeto da classe \poli  que representa a multiplicação dos polinomio representados pelo objeto atual e pelo objeto $b$.}
+\begin{lstlisting}[language=C++]
+polinomio polinomio::operator / (polinomio b) { ... }
+\end{lstlisting}
+\shift{O valor de retorno é um objeto da classe \poli que representa o quociente da divisão dos polinomios representados pelo objeto atual e pelo objeto $b$.}
+\begin{lstlisting}[language=C++]
+polinomio polinomio::operator % (polinomio b) { ... }
+\end{lstlisting}
+\shift{O valor de retorno é um objeto da classe \poli que representa o resto da divisão dos polinomio representados pelo objeto atual e pelo objeto $b$.}
+\item \setlength{\leftskip}{4mm} {\bf Funções adicionais:}
+\begin{lstlisting}[language=C++]
+int polinomio::Grau();
+\end{lstlisting}
+\shift{Determine o grau do polinómio. Se o polinómio for nulo deve devolver $-1$.}
+
+\begin{lstlisting}[language=C++]
+void polinomio::Print();
+\end{lstlisting}
+\shift{Imprime o objeto da classe \poli .}
+\end{enumerate}
+
+\nextsect
+\sectitle{O máximo divisor comum}
+
+\nextexer{} Escreva uma função {\bf polinomio mdc(polinomio f, polinomio g)} que permite calcular o máximo divisor comum entre $f$ e $g$. Calcue $mdc(f,g)$ para $f=x^{11}+x^6+x^2+1$ e $g=x^6+x^3+1$.
+
+\nextsect
+\sectitle{Polinómios irredutíveis}
+
+\nextexer{} Um polinómio $f\in \ZZ_2[x]\setminus \{0,1\}$ diz-se irredutível se para qualquer $g,h\in \ZZ_2[x]$ com $f=g*h$ temos que $f=1$ ou $g=1$, ou seja se os únicos divisores de $f$ são $1$ e $f$. Escreva uma função {\bf bool Irredutivel(polinomio f)} que permite determinar se um polinómio $f$ é irredutível ou não. Verifique quais dos polinómios são irredutíveis: 
+\begin{enumerate}
+\item $g=x^6+x^3+1$;
+\item $h=x^6+x^3+x^2+x+1$;
+\item $k=x^{10}+x^9+x^8+x^7+x^6+x^5+x^4+x^3+x^2+x+1$.
+\end{enumerate}
+
+
+
+
+\end{document}
+
+
+
