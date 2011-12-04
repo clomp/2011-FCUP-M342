@@ -1,0 +1,44 @@
+\include{algcomp_folha_header}
+\usepackage{hyperref}
+
+\newcommand{\real}[1]{\underline{\mathbf{#1}}} 
+\newcommand{\mod}{\mathrm{mod}\:}
+
+\begin{document}
+\writetitle{05.12.2011}{8}{8}
+
+
+\nextsect
+
+\sectitle{Algoritmo de divisão}
+
+\begin{enumerate}
+\item Calcule o resto da divisão de $f$ por $F$ com a ordem monomial indicado:
+\begin{enumerate}
+\item $f=x^7y^2+x^3y^2-y+1,\qquad F=(xy^2-x, x-y^3), \qquad >_{\mathrm{lex}} \mbox{  com  } x>y$
+\item $f=x^7y^2+x^3y^2-y+1,\qquad F=(x-y^3, xy^2-x), \qquad >_{\mathrm{lex}} \mbox{  com  } x>y$
+\item $f=x^7y^2+x^3y^2-y+1,\qquad F=(xy^2-x, x-y^3), \qquad >_{\mathrm{grlex}} \mbox{  com  } x>y$
+\item $f=x^7y^2+x^3y^2-y+1,\qquad F=(x-y^3, xy^2-x), \qquad >_{\mathrm{grlex}} \mbox{  com  } x>y$
+\item $f=xy^2z^2+xy-yz,\qquad F=(x-y^2, y-z^3, z^2-1), \qquad >_{\mathrm{lex}} \mbox{  com  } x>y>z$
+\item $f=xy^2z^2+xy-yz,\qquad F=(y-z^3, z^2-1, x-y^2), \qquad >_{\mathrm{lex}} \mbox{  com  } x>y>z$
+\item $f=xy^2z^2+xy-yz,\qquad F=(z^2-1, x-y^2, y-z^3), \qquad >_{\mathrm{lex}} \mbox{  com  } x>y>z$
+\end{enumerate}
+\item Sejam $f_1=x^2y-z$, $f_2=xy-1$ e $f=x^3-x^2y -x^2z+x$.
+\begin{enumerate}
+\item Calcule $r_1$, o resto da divisão de $f$ por $F=(f_1,f_2)$ utilizando a ordem {\it lex}.
+\item Calcule $r_2$, o resto da divisão de $f$ por $F=(f_2,f_1)$ utilizando a ordem {\it lex}.
+\item Seja $r=r_1-r_2$. Determine se $r\in I=\langle f_1,f_2\rangle$.
+\item Sem calculo determine o resto da divisão de $r$ por $F=(f_1,f_2)$.
+\end{enumerate}
+\item Sejam $V=V(y-x^2,z-x^3)$ e $h=z^2-x^4y$.
+\begin{enumerate}
+\item Mostre que $h(a,b,c)=0$ para todo ponto $(a,b,c)\in V$.
+\item Utilizando uma ordem monomial adequada e divisão de $h$ por $F=(y-x^2,z-x^3)$ para mostrar que $h\in \langle y-x^2,z-x^3\rangle$.
+\end{enumerate}
+
+\end{enumerate}
+
+
+
+
+\end{document}
